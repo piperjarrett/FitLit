@@ -43,7 +43,6 @@ function displayUserDetails() {
 }
 
 function displayFriends() {
-  let friendName = "";
   user.friends.find((friend) => {
     const userInfo = userRepository.findUserData(friend);
     friendsList.innerHTML += `<li> ${userInfo.name} </li>`
