@@ -17,10 +17,7 @@ import HydrationSeries from "./HydrationSeries";
 import SleepSeries from "./SleepSeries";
 import Chart from "chart.js/auto";
 import UserActivity from "./UserActivity";
-// const activityData = require("./data/userActivityTestData");
 
-// Test data
-// const userActivityTestData = require("../data/userActivityTestData");
 //Global Variables
 let user;
 let userRepository;

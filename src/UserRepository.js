@@ -27,5 +27,16 @@ class UserRepository {
     const averageSleepDetail = (allUserSleepDetail/ sleepData.length).toFixed(1)
     return parseFloat(averageSleepDetail)
   }
+
+  findAverageActivityDetail(activityData, detail) {
+    const userActivityDetail= activityData.map(user => user[detail])
+    const allUserActivityDetail = userActivityDetail.reduce((total, user) => {
+      total += user
+      return total
+    }, 0)
+    const averageActivityDetail = (allUserActivityDetail/ activityData.length)
+    return Math.round(averageActivityDetail)
+  }
+
 }
 export default UserRepository;

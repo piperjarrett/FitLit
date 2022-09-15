@@ -3,60 +3,67 @@ class UserActivity {
     this.data = userActivityData;
   }
 
-  milesBasedOnSteps(activityDate, user) {
+  getMilesBasedOnSteps(activityDate, user) {
     let userActivity = this.data.filter((data) => data.date === activityDate);
-    if (userActivity.length < 1) {
-      return "Sorry no data available for given date";
-    } else {
-      let numberOfSteps = userActivity.reduce((acc, activity) => {
-        acc += activity.numSteps;
-        return acc;
-      }, 0);
+    let numberOfSteps = userActivity.reduce((acc, activity) => {
+      acc += activity.numSteps;
+      return acc;
+    }, 0);
+    if (userActivity.length > 0) {
       const numOfStridesForMile = 5280 / user.strideLength;
       const numberOfMilesWalked = numberOfSteps / numOfStridesForMile;
       return parseFloat(numberOfMilesWalked.toFixed(2));
+    } else {
+      return 0.0;
     }
   }
-  minutesActive(activityDate, user) {
+  getMinutesActiveByDate(activityDate) {
     let userActivity = this.data.filter((data) => data.date === activityDate);
-    if (userActivity.length < 1) {
-      return "Sorry no data available for given date";
-    } else {
-      let activeTime = userActivity.reduce((activeMinutes, activity) => {
-        activeMinutes += activity.minutesActive;
-        return activeMinutes;
-      }, 0);
+    let activeTime = userActivity.reduce((activeMinutes, activity) => {
+      activeMinutes += activity.minutesActive;
+      return activeMinutes;
+    }, 0);
+    if (userActivity.length > 0) {
       return activeTime;
-    }
-  }
-  stepGoalForGivenDay(activityDate, user) {
-    let stepGoalMet = false;
-    const userActivity = this.data.filter((data) => data.date === activityDate);
-    const stepGoalvsStep = userActivity.forEach((activity) => {
-      if (activity.numSteps >= user.dailyStepGoal) {
-        stepGoalMet = true;
-      } else {
-        stepGoalMet = false;
-      }
-    });
-    return stepGoalMet;
-  }
-  allDaysExceedingStepGoal(user) {
-    let response = "";
-    const daysExceedingStepGoal = this.data.filter(
-      (activity) => activity.numSteps > user.dailyStepGoal
-    );
-    if (daysExceedingStepGoal.length < 1) {
-      response = `Sorry you haven't exceeded your step goal.`;
     } else {
-      daysExceedingStepGoal.forEach((exceededActivity) => {
-        response = `You exceeded your step goal on ${
-          exceededActivity.date
-        } by ${exceededActivity.numSteps - user.dailyStepGoal} steps`;
-      });
+      return 0;
     }
-    return response;
   }
+
+  compareStepGoalByDate(activityDate, user) {
+    const userActivity = this.data.filter((data) => data.date === activityDate);
+    userActivity.forEach((activity) => {
+      return activity.numSteps >= user.dailyStepGoal;
+    });
+  }
+
+  getActivityDataForWeek(endDate) {
+    const endDateObj = new Date(endDate);
+    const startDate = new Date(endDate);
+    startDate(endDateObj.getDate() - 7);
+    const weeklyActivityData = this.data.filter((data) => {
+      return data.date <= endDateObj && data.date > startDate;
+    });
+    return weeklyActivityData;
+  }
+
+  getMinutesActiveForWeek(endDate) {
+    this.getActivityDataForWeek(endDate);
+    const sum = weeklyActivityData.reduce((acc, entry) => {
+      acc += entry.minutesActive;
+      return acc;
+    }, 0);
+    const averageMinutesActive = Math.round(sum / weeklyActivityData.length);
+    return averageMinutesActive;
+  }
+
+  //This needs to be updated. I think it's asking for "all dates" they exceeded the goal
+  // allDaysExceedingStepGoal(user) {
+  //   const daysExceedingStepGoal = this.data.filter(
+  //     (activity) => activity.numSteps >= user.dailyStepGoal
+  //   );
+  // }
+
   allTimeStairClimbingRecord() {
     const climbingRecord = this.data.sort((a, b) => {
       return b.flightsOfStairs - a.flightsOfStairs;
