@@ -31,19 +31,17 @@ class UserActivity {
   }
 
   compareStepGoalByDate(activityDate, user) {
-    const userActivity = this.data.find((data) => data.date === activityDate);    
-      return userActivity.numSteps >= user.dailyStepGoal;
+    const userActivity = this.data.find((data) => data.date === activityDate);
+    return userActivity.numSteps >= user.dailyStepGoal;
   }
 
   getMinutesActiveForWeek(endDate) {
     const endDateObj = new Date(endDate);
     const startDate = new Date(endDate);
-    startDate(endDateObj.getDate() - 7);
+    startDate.setDate(endDateObj.getDate() - 7);
     const weeklyActivityData = this.data.filter((data) => {
-      let entryDate = `${startDate.getFullYear()}/${String(
-        startDate.getMonth() + 1
-      ).padStart(2, "0")}/${String(startDate.getDate()).padStart(2, "0")}`;
-      return data.date <= endDateObj && data.date > entryDate;
+      const entryDate = new Date(data.date);
+      return entryDate <= endDateObj && entryDate > startDate;
     });
     const sum = weeklyActivityData.reduce((acc, entry) => {
       acc += entry.minutesActive;

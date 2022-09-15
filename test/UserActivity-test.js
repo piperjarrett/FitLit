@@ -43,7 +43,7 @@ describe("UserActivity", () => {
   });
   it("should have a method to calculate average minutes active for a given week", () => {
     const result = userActivity.getMinutesActiveForWeek("2019/06/21", user);
-    expect(result).to.equal();
+    expect(result).to.equal(171);
   });
 
 
