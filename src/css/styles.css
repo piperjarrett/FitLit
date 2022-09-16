@@ -27,7 +27,7 @@ html {
 }
 
 header,
-main{
+main {
   display: flex;
   justify-content: space-between;
 }
@@ -40,7 +40,6 @@ header {
 main {
   flex-direction: row;
   margin: 20px;
-  
 }
 
 .left-nav {
@@ -68,10 +67,10 @@ main {
 }
 
 .friends-container,
-.steps-container, 
+.steps-container,
 .placeholder-container,
-.hydration-container ,
-.sleep-container, 
+.hydration-container,
+.sleep-container,
 .user-container {
   display: flex;
   flex-direction: column;
@@ -79,7 +78,6 @@ main {
   color: white;
   box-shadow: 1px 0 3px rgb(192, 192, 192), -1px 0 3px rgb(192, 192, 192),
     0 1px 3px rgb(192, 192, 192), 0 -1px 3px rgb(192, 192, 192);
-
 }
 
 .user-container,
@@ -94,7 +92,7 @@ main {
   margin-right: 20px;
 }
 
-.user-card{
+.user-card {
   color: black;
 }
 
@@ -176,12 +174,12 @@ main {
   margin-top: 0px;
 }
 
-.sleep-data, .hydra-data {
+.sleep-data,
+.hydra-data {
   border: 1px solid #2cb7ff;
 }
 .sleep-for-week {
   margin-top: 15px;
-  
 }
 
 .hydra-data {
@@ -194,7 +192,7 @@ main {
 
 .hydration-container {
   color: black;
-  flex-direction:column;
+  flex-direction: column;
   width: auto;
   align-content: center;
   text-align: center;
@@ -213,8 +211,7 @@ main {
   margin: 2vw;
 }
 
-
-.steps-container, 
+.steps-container,
 .placeholder-container {
   color: rgb(0, 0, 0);
   width: auto;
@@ -273,7 +270,7 @@ label {
   height: auto;
 }
 
-.chart.text{
+.chart.text {
   font-size: 1vw;
 }
 
