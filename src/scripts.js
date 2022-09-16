@@ -49,7 +49,10 @@ const activityCard = document.querySelector(".activity-info");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
 const calenderInput = document.querySelector(".calender");
-const formSubmitButtopn = document.querySelector(".data-submit");
+const formSubmitButton = document.querySelector(".data-submit");
+let result = categoriesValue.options[categoriesValue.selectedIndex].text;
+const hoursSlept = document.querySelector("#hoursSlept");
+const sleepQuality = document.querySelector("#sleepQuality");
 // Event Listeners
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
@@ -63,14 +66,14 @@ submitButton.addEventListener("click", () => {
 });
 
 //console.log(categoriesValue.value)
+formSubmitButton.addEventListener("click", getDataToPost);
 categoriesValue.addEventListener("change", () => {
   const sleepInputs = document.querySelector(".sleep-data-inputs");
   const hydrationInputs = document.querySelector(".hydration-data-inputs");
   const activityInputs = document.querySelector(".activity-data-inputs");
   const dateSelector = document.querySelector(".date-input");
   const selectionLabel = document.querySelector(".selection-label");
-  let result = categoriesValue.options[categoriesValue.selectedIndex].text;
-
+  result = categoriesValue.options[categoriesValue.selectedIndex].text;
   if (result === "Sleep Data") {
     selectionLabel.innerText = "Please Enter Your Sleep Data";
     sleepInputs.classList.remove("hidden");
@@ -152,6 +155,23 @@ promiseAll().then((responses) => {
 
 function getRandomIndex(userData) {
   return Math.floor(Math.random() * userData.length);
+}
+
+function getDataToPost(event) {
+  event.preventDefault();
+  console.log(result);
+  const calenderDate = calenderInput.value.split("-").join("/");
+  if (result === "Sleep Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      hoursSlept: parseInt(hoursSlept.value),
+      sleepQuality: parseInt(sleepQuality.value),
+    };
+    console.log(data);
+    postData("sleep", data);
+    console.log(response);
+  }
 }
 
 function displayDashboard() {
