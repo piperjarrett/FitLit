@@ -6,6 +6,8 @@ import "./images/water-bottle.png";
 import "./images/logo_transparent.png";
 import "./images/avatar-male.png";
 import "./images/gym.png";
+import "./images/moon.png"
+import "./images/sun.svg"
 
 //Import fetch
 import { promiseAll } from "./apiCalls.js";
@@ -45,6 +47,9 @@ const chart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
 const activityCard = document.querySelector(".activity-info");
 
+const changeBackground = document.querySelector(".back-color-button")
+const categoriesValue = document.querySelector(".categories-value")
+
 // Event Listeners
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
@@ -56,6 +61,65 @@ submitButton.addEventListener("click", () => {
   displayNumberOfSteps();
   displayMinutesActive();
 });
+
+//console.log(categoriesValue.value)
+categoriesValue.addEventListener('change', ()=> {
+  const sleepInputs = document.querySelector('.sleep-data-inputs')
+  const hydrationInputs = document.querySelector('.hydration-data-inputs')
+  const activityInputs  = document.querySelector('.activity-data-inputs')
+  const dateSelector = document.querySelector('.date-input')
+  const selectionLabel = document.querySelector('.selection-label')
+ let result = categoriesValue.options[categoriesValue.selectedIndex].text;
+ 
+   if(result === 'Sleep Data'){
+    selectionLabel.innerText = 'Please Enter Your Sleep Data'
+      sleepInputs.classList.remove('hidden')
+      activityInputs.classList.add('hidden')
+      hydrationInputs.classList.add('hidden')
+      dateSelector.classList.remove('hidden')
+      categoriesValue.classList.add("hidden")
+
+   } else if(result ==='Hydration Data' ){
+    selectionLabel.innerText = 'Please Enter Your Hydration Data'
+    sleepInputs.classList.add('hidden')
+    activityInputs.classList.add('hidden')
+    hydrationInputs.classList.remove('hidden')
+    dateSelector.classList.remove('hidden')
+    categoriesValue.classList.add("hidden")
+    
+   } else if(result === 'Activity Data' ){
+    selectionLabel.innerText = 'Please Enter Your Activity Data'
+    sleepInputs.classList.add('hidden')
+    activityInputs.classList.remove('hidden')
+    hydrationInputs.classList.add('hidden')
+    dateSelector.classList.remove('hidden')
+    categoriesValue.classList.add("hidden")
+   } else {
+    sleepInputs.classList.add('hidden')
+    activityInputs.classList.add('hidden')
+    hydrationInputs.classList.add('hidden')
+    dateSelector.classList.add('hidden')
+    categoriesValue.classList.remove("hidden")
+   }
+})
+
+
+
+var nextImg = 'light'
+changeBackground.addEventListener('click', () => {
+  const light = document.querySelector('.fit-lit-light')
+  let img = ['./images/sun.svg', './images/moon.png']
+  if(nextImg === 'light') {
+    light.classList.add('fit-lit-dark')
+    changeBackground.src = img[0]
+    nextImg = 'dark'
+  }else{
+    light.classList.remove('fit-lit-dark')
+    changeBackground.src = img[1]
+    nextImg = 'light';
+  }
+ 
+})
 
 promiseAll().then((responses) => {
   userData = responses[0];
@@ -351,3 +415,5 @@ function displayMinutesActive() {
     activityCard.innerHTML += `</p>and were active for ${minsActive} minutes</p>`;
   }
 }
+
+
