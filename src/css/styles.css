@@ -1,8 +1,31 @@
 body,
 html {
-  background-color: white;
   font-family: "Roboto Mono", monospace;
 }
+.fit-lit-light{ 
+  background-color:rgb(255, 255, 255);
+
+}
+
+.fit-lit-dark{
+  background-color: black;
+}
+
+.fit-lit-dark .back-color-button {
+  fill: white !important;
+}
+
+.back-color-button {
+  width:2vw;
+  position: absolute;
+  left: 92vw;
+  margin-top: 2vh;
+}
+
+.back-color-button:hover main:hover {
+  cursor: pointer;
+}
+
 header,
 main{
   display: flex;
@@ -21,18 +44,19 @@ main {
 }
 
 .left-nav {
-  width: 65vw;
+  width: 70vw;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .right-nav {
-  width: 35vw;
+  width: 30vw;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 2vw;
 }
 
 .vitals-section {
@@ -40,6 +64,7 @@ main {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content:flex-start;
+  margin: 2vw;
 }
 
 .friends-container,
@@ -57,7 +82,8 @@ main {
 
 }
 
-.user-container {
+.user-container,
+.add-form-container {
   font-size: 14px;
   word-wrap: normal;
   padding-left: 1em;
@@ -72,7 +98,8 @@ main {
   color: black;
 }
 
-.submit {
+.submit,
+.data-submit {
   align-items: center;
   color: black;
   background-color: white;
@@ -86,13 +113,21 @@ main {
   justify-content: center;
 }
 
-.date-form input {
+.date-form input,
+.date-input input,
+.categories-value,
+#hoursSlept,
+#sleepQuality,
+#numOfOunces,
+#minutesActive,
+#numOfSteps,
+#flightsOfStairs {
   height: 4vh;
   width: 15vw;
   border-radius: 12px;
 }
 
-button:hover {
+.submit:hover, .data-submit:hover {
   cursor: pointer;
   box-shadow: 1px 0 3px #cc66ff, -1px 0 3px #cc66ff, 0 1px 3px #cc66ff,
     0 -1px 3px#CC66FF;
@@ -124,8 +159,8 @@ button:hover {
 }
 
 .friend img{
-  width: 1.5vw;
-  height: 2.5vh;
+  width: 20px;
+  height: 20px;
 }
 
 .sleep-container {
@@ -164,7 +199,7 @@ button:hover {
   align-content: center;
   text-align: center;
   background-color: #2cb7ff;
-  margin-right: 15px;
+  margin-left:2vw;
   padding-top: 10px;
   padding-right: 1vw;
   padding-bottom: 1vw;
@@ -175,6 +210,7 @@ button:hover {
   display: flex;
   flex-direction: row;
   justify-content:flex-start;
+  margin: 2vw;
 }
 
 
@@ -190,12 +226,14 @@ button:hover {
   margin-bottom: 25px;
 }
 
+
 .placeholder-container {
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
   width: 20vw;
-  margin-left: 20px;
+  margin-left: 1.5vw;
 }
+
+
 .step-comparison-message {
   font-size: 10px;
 }
@@ -248,5 +286,58 @@ p {
 .email,
 .stride-length,
 .step-goal {
-  font-size:2vh;
+  font-size:1vw;
+
+}
+
+/* adding data */
+
+.add-form-container {
+  background-color: #6947ff;
+  margin-top: 2vw;
+  border-radius: 12px;
+}
+
+.adding-data-section{
+  display: flex;
+  flex-direction: column;
+  margin-top: 5vh;
+  justify-content: center;
+  color: aliceblue;
+}
+
+.adding-data-form{
+  align-self: center;
+
+}
+
+#hoursSlept,
+#sleepQuality,
+#numOfOunces,
+#minutesActive,
+#numOfSteps,
+#flightsOfStairs {
+  text-size-adjust: 12vw;
+  width: 6vw;
+}
+
+.sleep-data-inputs,
+.hydration-data-inputs,
+.activity-data-inputs {
+ display: flex;
+ flex-direction: row;
+ justify-content:space-around;
+ flex-wrap: wrap;
+}
+
+.hidden {
+  display: none;
+}
+
+#hourSlept {
+  margin-left: 20vw;
+}
+
+.data-submit {
+  height: 5vh;
 }
