@@ -39,8 +39,8 @@ const stepDetails = document.querySelector(".step-card");
 const avgSleepHours = document.querySelector(".average-sleep-hours");
 const avgQualitySleep = document.querySelector(".average-quality-sleep");
 const sleepForWeek = document.querySelector(".sleep-for-week");
-const inputValue = document.querySelector("input");
-const submitButton = document.querySelector("button");
+const inputValue = document.querySelector(".calender-one");
+const submitButton = document.querySelector(".submit");
 const dataForDay = document.querySelector(".table-data");
 const hydraData = document.querySelector(".hydration-card");
 const chart = document.querySelector(".hydra-chart");
@@ -53,6 +53,10 @@ const formSubmitButton = document.querySelector(".data-submit");
 let result = categoriesValue.options[categoriesValue.selectedIndex].text;
 const hoursSlept = document.querySelector("#hoursSlept");
 const sleepQuality = document.querySelector("#sleepQuality");
+const numOfOunces = document.querySelector("#numOfOunces");
+const minsActive = document.querySelector("#minutesActive");
+const numOfSteps = document.querySelector("#numOfSteps");
+const flightsOfStairs = document.querySelector("#flightsOfStairs");
 // Event Listeners
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
@@ -159,7 +163,6 @@ function getRandomIndex(userData) {
 
 function getDataToPost(event) {
   event.preventDefault();
-  console.log(result);
   const calenderDate = calenderInput.value.split("-").join("/");
   if (result === "Sleep Data") {
     let data = {
@@ -168,10 +171,26 @@ function getDataToPost(event) {
       hoursSlept: parseInt(hoursSlept.value),
       sleepQuality: parseInt(sleepQuality.value),
     };
-    console.log(data);
     postData("sleep", data);
-    console.log(response);
+  } else if (result === "Hydration Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      numOunces: parseInt(numOfOunces.value),
+    };
+    postData("hydration", data);
+  } else if (result === "Activity Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      numSteps: parseInt(minsActive.value),
+      minutesActive: parseInt(numOfSteps.value),
+      flightsOfStairs: parseInt(flightsOfStairs.value),
+    };
+    postData("activity", data);
   }
+  inputValue.value = calenderInput.value;
+  promiseAll();
 }
 
 function displayDashboard() {

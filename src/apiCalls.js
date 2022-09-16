@@ -26,8 +26,6 @@ const postData = (details, data) => {
   })
     .then((response) => response.json())
     .catch((err) => console.log(err));
-  fetchData(details);
-  console.log(response);
 };
 
 export { promiseAll };
