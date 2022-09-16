@@ -16,4 +16,20 @@ const promiseAll = () => {
   return result;
 };
 
+function postData(details, data) {
+  return fetch(`http://localhost:3001/api/v1/${details}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((data) => data.json())
+    .catch((err) => console.log(err))
+    .then((data) => fetch(`http://localhost:3001/api/v1/${details}`))
+    .then((data) => data.json())
+    .catch((err) => console.log(err));
+}
+
 export { promiseAll };
+export { postData };
