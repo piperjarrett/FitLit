@@ -25,6 +25,7 @@ const postData = (details, data) => {
     },
   })
     .then((response) => response.json())
+    .then((response) => fetchData(details))
     .catch((err) => console.log(err));
 };
 

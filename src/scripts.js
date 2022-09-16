@@ -57,7 +57,10 @@ const numOfOunces = document.querySelector("#numOfOunces");
 const minsActive = document.querySelector("#minutesActive");
 const numOfSteps = document.querySelector("#numOfSteps");
 const flightsOfStairs = document.querySelector("#flightsOfStairs");
+
+let dateInput = inputValue.value.split("-").join("/");
 // Event Listeners
+
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
   displaySleepForAWeek();
@@ -153,7 +156,6 @@ promiseAll().then((responses) => {
   userActivity = new UserActivity(
     activityData.filter((entry) => entry.userID === user.id)
   );
-
   displayDashboard();
 });
 
@@ -163,7 +165,9 @@ function getRandomIndex(userData) {
 
 function getDataToPost(event) {
   event.preventDefault();
+
   const calenderDate = calenderInput.value.split("-").join("/");
+  dateInput = calenderDate;
   if (result === "Sleep Data") {
     let data = {
       userID: user.id,
@@ -189,8 +193,11 @@ function getDataToPost(event) {
     };
     postData("activity", data);
   }
-  inputValue.value = calenderInput.value;
+  // inputValue.value = calenderInput.value;
+  // dateInput = calenderDate;
   promiseAll();
+  displayDashboard();
+  console.log(user.userSleepData);
 }
 
 function displayDashboard() {
@@ -246,7 +253,6 @@ function displayAverageSleep() {
   )}</p>`;
 }
 function displaySleepForSpecificDay() {
-  const dateInput = inputValue.value.split("-").join("/");
   const sleepPerDay = user.userSleepData.getSleepDataPerDay(
     dateInput,
     "hoursSlept"
@@ -270,7 +276,6 @@ function displaySleepForSpecificDay() {
 }
 
 function displaySleepForAWeek() {
-  const dateInput = inputValue.value.split("-").join("/");
   const sleepInAWeek = user.userSleepData
     .getSleepPerDayForWeek(dateInput, "hoursSlept")
     .reverse();
@@ -318,7 +323,6 @@ function displaySleepForAWeek() {
 }
 
 function displayHydraForToday() {
-  const dateInput = inputValue.value.split("-").join("/");
   const dayFluids = user.userHydrationData.getDayFluid(dateInput);
   hydraData.innerHTML = `
     <table class="hydra-data">
@@ -333,7 +337,6 @@ function displayHydraForToday() {
 }
 
 function displayHydrationForWeek() {
-  const dateInput = inputValue.value.split("-").join("/");
   const hydrationWeek = user.userHydrationData
     .getWeeklyFluids(dateInput)
     .reverse();
@@ -416,8 +419,6 @@ function displaySteps() {
 }
 
 function displayMilesWalked() {
-  const dateInput = inputValue.value.split("-").join("/");
-
   const milesWalked = userActivity.milesBasedOnSteps(dateInput, user);
   if (milesWalked === 0) {
     activityCard.innerHTML = "<p>Please add data for given date</p>";
@@ -428,7 +429,6 @@ function displayMilesWalked() {
 }
 
 function displayNumberOfSteps() {
-  const dateInput = inputValue.value.split("-").join("/");
   console.log(user);
   const numberOfSteps = userActivity.data.find((activity) => {
     return activity.date === dateInput;
@@ -441,7 +441,6 @@ function displayNumberOfSteps() {
 }
 
 function displayMinutesActive() {
-  const dateInput = inputValue.value.split("-").join("/");
   const minsActive = userActivity.minutesActive(dateInput, user);
   if (minsActive === 0) {
     activityCard.innerHTML += "";
