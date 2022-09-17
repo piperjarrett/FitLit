@@ -47,8 +47,12 @@ class UserActivity {
       acc += entry.minutesActive;
       return acc;
     }, 0);
-    const averageMinutesActive = Math.round(sum / weeklyActivityData.length);
+    const averageMinutesActive = Math.round(sum / 7);
     return averageMinutesActive;
+  }
+
+  allDaysExceedStepGoal(user) {
+    return this.data.filter((data) => data.numSteps > user.dailyStepGoal)
   }
 
   allTimeStairClimbingRecord() {
