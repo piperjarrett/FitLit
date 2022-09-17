@@ -19,14 +19,14 @@ class UserActivity {
   }
   getMinutesActiveByDate(activityDate) {
     let userActivity = this.data.filter((data) => data.date === activityDate);
-    let activeTime = userActivity.reduce((activeMinutes, activity) => {
-      activeMinutes += activity.minutesActive;
-      return activeMinutes;
-    }, 0);
-    if (userActivity.length > 0) {
-      return activeTime;
-    } else {
+    if (userActivity.length < 1) {
       return 0;
+    } else {
+      let activeTime = userActivity.reduce((activeMinutes, activity) => {
+        activeMinutes += activity.minutesActive;
+        return activeMinutes;
+      }, 0);
+      return activeTime;
     }
   }
 
@@ -50,13 +50,6 @@ class UserActivity {
     const averageMinutesActive = Math.round(sum / weeklyActivityData.length);
     return averageMinutesActive;
   }
-
-  //This needs to be updated. I think it's asking for "all dates" they exceeded the goal
-  // allDaysExceedingStepGoal(user) {
-  //   const daysExceedingStepGoal = this.data.filter(
-  //     (activity) => activity.numSteps >= user.dailyStepGoal
-  //   );
-  // }
 
   allTimeStairClimbingRecord() {
     const climbingRecord = this.data.sort((a, b) => {

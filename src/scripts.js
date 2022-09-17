@@ -6,6 +6,8 @@ import "./images/water-bottle.png";
 import "./images/logo_transparent.png";
 import "./images/avatar-male.png";
 import "./images/gym.png";
+import "./images/moon.png"
+import "./images/sun.svg"
 
 //Import fetch
 import { promiseAll } from "./apiCalls.js";
@@ -26,6 +28,7 @@ let userData;
 let hydrationData;
 let sleepData;
 let userActivity;
+let activityData;
 
 // Query Selectors
 const userDetails = document.querySelector(".user-card");
@@ -40,7 +43,10 @@ const dataForDay = document.querySelector(".table-data");
 const hydraData = document.querySelector(".hydration-card");
 const chart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
-// const activityCard = document.querySelector(".activity-card");
+const activityCard = document.querySelector(".activity-info");
+
+const changeBackground = document.querySelector(".back-color-button")
+const categoriesValue = document.querySelector(".categories-value")
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
@@ -49,13 +55,75 @@ submitButton.addEventListener("click", () => {
   displaySleepForSpecificDay();
   displayHydraForToday();
   displayHydrationForWeek();
-  // displayMilesWalked();
+  displayMilesWalked();
+  displayNumberOfSteps();
+  displayMinutesActive();
 });
+
+//console.log(categoriesValue.value)
+categoriesValue.addEventListener('change', ()=> {
+  const sleepInputs = document.querySelector('.sleep-data-inputs')
+  const hydrationInputs = document.querySelector('.hydration-data-inputs')
+  const activityInputs  = document.querySelector('.activity-data-inputs')
+  const dateSelector = document.querySelector('.date-input')
+  const selectionLabel = document.querySelector('.selection-label')
+ let result = categoriesValue.options[categoriesValue.selectedIndex].text;
+ 
+   if(result === 'Sleep Data'){
+    selectionLabel.innerText = 'Please Enter Your Sleep Data'
+      sleepInputs.classList.remove('hidden')
+      activityInputs.classList.add('hidden')
+      hydrationInputs.classList.add('hidden')
+      dateSelector.classList.remove('hidden')
+      categoriesValue.classList.add("hidden")
+
+   } else if(result ==='Hydration Data' ){
+    selectionLabel.innerText = 'Please Enter Your Hydration Data'
+    sleepInputs.classList.add('hidden')
+    activityInputs.classList.add('hidden')
+    hydrationInputs.classList.remove('hidden')
+    dateSelector.classList.remove('hidden')
+    categoriesValue.classList.add("hidden")
+    
+   } else if(result === 'Activity Data' ){
+    selectionLabel.innerText = 'Please Enter Your Activity Data'
+    sleepInputs.classList.add('hidden')
+    activityInputs.classList.remove('hidden')
+    hydrationInputs.classList.add('hidden')
+    dateSelector.classList.remove('hidden')
+    categoriesValue.classList.add("hidden")
+   } else {
+    sleepInputs.classList.add('hidden')
+    activityInputs.classList.add('hidden')
+    hydrationInputs.classList.add('hidden')
+    dateSelector.classList.add('hidden')
+    categoriesValue.classList.remove("hidden")
+   }
+})
+
+
+
+var nextImg = 'light'
+changeBackground.addEventListener('click', () => {
+  const light = document.querySelector('.fit-lit-light')
+  let img = ['./images/sun.svg', './images/moon.png']
+  if(nextImg === 'light') {
+    light.classList.add('fit-lit-dark')
+    changeBackground.src = img[0]
+    nextImg = 'dark'
+  }else{
+    light.classList.remove('fit-lit-dark')
+    changeBackground.src = img[1]
+    nextImg = 'light';
+  }
+ 
+})
 
 promiseAll().then((responses) => {
   userData = responses[0];
   hydrationData = responses[1].hydrationData;
   sleepData = responses[2].sleepData;
+  activityData = responses[3].activityData;
   user = new User(userData.userData[getRandomIndex(userData.userData)]);
   user.userSleepData = new SleepSeries(
     sleepData.filter((entry) => entry.userID === user.id)
@@ -78,9 +146,9 @@ promiseAll().then((responses) => {
     return newUser;
   });
   userRepository = new UserRepository(allUsers);
-  // userActivity = new UserActivity(
-  //   activityData.filter((entry) => entry.userID === user.id)
-  // );
+  userActivity = new UserActivity(
+    activityData.filter((entry) => entry.userID === user.id)
+  );
 
   displayDashboard();
 });
@@ -98,7 +166,9 @@ function displayDashboard() {
   displayHydraForToday();
   displayHydrationForWeek();
   displaySteps();
-  // displayMilesWalked();
+  displayMilesWalked();
+  displayNumberOfSteps();
+  displayMinutesActive();
 }
 
 function displayUserDetails() {
@@ -309,8 +379,39 @@ function displaySteps() {
   stepDetails.innerHTML += `<p class=chart-text>Your daily step goal is ${comparison}% compared to all average users.</p>`;
 }
 
-// function displayMilesWalked() {
-//   const dateInput = inputValue.value.split("-").join("/");
-//   const milesWalked = userActivity.milesBasedOnSteps(dateInput, user);
-//   activityCard.innerHTML = `<p>You walked ${milesWalked} miles on ${dateInput}`;
-// }
+function displayMilesWalked() {
+  const dateInput = inputValue.value.split("-").join("/");
+
+  const milesWalked = userActivity.milesBasedOnSteps(dateInput, user);
+  if (milesWalked === 0) {
+    activityCard.innerHTML = "<p>Please add data for given date</p>";
+  } else {
+    activityCard.innerHTML = `<h3>On ${dateInput} you:</h3>
+    <p>  walked ${milesWalked} miles, `;
+  }
+}
+
+function displayNumberOfSteps() {
+  const dateInput = inputValue.value.split("-").join("/");
+  console.log(user);
+  const numberOfSteps = userActivity.data.find((activity) => {
+    return activity.date === dateInput;
+  });
+  if (numberOfSteps === undefined) {
+    activityCard.innerHTML += "";
+  } else {
+    activityCard.innerHTML += `</p>${numberOfSteps.numSteps} steps,</p>`;
+  }
+}
+
+function displayMinutesActive() {
+  const dateInput = inputValue.value.split("-").join("/");
+  const minsActive = userActivity.minutesActive(dateInput, user);
+  if (minsActive === 0) {
+    activityCard.innerHTML += "";
+  } else {
+    activityCard.innerHTML += `</p>and were active for ${minsActive} minutes</p>`;
+  }
+}
+
+

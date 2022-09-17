@@ -46,21 +46,6 @@ describe("UserActivity", () => {
     expect(result).to.equal(171);
   });
 
-
-  //Might need refactoring. I'm not sure what the spec is asking
-  // it("should create a method that finds all the days where the user exceeded their step goal", () => {
-  //   const resultTwo = userActivity.allDaysExceedingStepGoal(user);
-  //   expect(resultTwo).to.equal("Sorry you haven't exceeded your step goal.");
-  //   user = new User(userData[1]);
-  //   userActivity = new UserActivity(
-  //     userActivityTestData.filter((data) => data.userID === 2)
-  //   );
-  //   const result = userActivity.allDaysExceedingStepGoal(user);
-  //   expect(result).to.equal(
-  //     "You exceeded your step goal on 2019/06/26 by 6522 steps"
-  //   );
-  // });
-
   it("should create a method that finds a users all-time stair climbing record", () => {
     const resultTwo = userActivity.allTimeStairClimbingRecord();
     expect(resultTwo).to.equal(36);

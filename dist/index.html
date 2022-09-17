@@ -11,7 +11,8 @@
     />
     <title>FitLit</title>
   </head>
-  <body>
+  <body class="fit-lit-light">
+    <img class="back-color-button"src="./images/moon.png" alt="">
     <header>
       <img
         src="./images/logo_transparent.png"
@@ -20,8 +21,11 @@
         height="140px"
         width="350px"
       />
+
     </header>
-    <main>
+
+    
+    <main class="">
       <section class="left-nav">
         <section class="vitals-section">
           <section class="sleep-container">
@@ -73,7 +77,7 @@
             </section>
             <section class="step-card"></section>
           </section>
-          <section class="placeholder-container"> 
+          <section class="placeholder-container">
             <img
             src="./images/gym.png"
             id="weightsImg"
@@ -82,6 +86,7 @@
             width="50px"
           />
           <section class="activity-card"></section>
+          <section class='activity-info'></section>
         </section>
       </section>
       <aside class="right-nav">
@@ -105,6 +110,44 @@
         <section class="friends-container">
           <h2 class="friends-header">Friends</h2>
           <section class="friends-card"></section>
+        </section>
+        <section class="add-form-container">
+          <section class="adding-data-section">
+          <form class="adding-data-form" action="">
+              <label class="selection-label" for="userActivitySelect">SELECT CATEGORY </label>
+              <select class="categories-value" name="categories" id="userActivitySelect">
+                  <option value=""> --Please Select An Option --</option>
+                  <option value="sleep"> Sleep Data</option>
+                  <option value="hydration"> Hydration Data</option>
+                  <option value="activity"> Activity Data</option>
+              </select>
+
+                <section  class="sleep-data-inputs hidden">
+                <label for="hoursSlept">Hours Slept <input id="hoursSlept" type="text"></label>
+                <label for="sleepQuality">Sleep Quality <input id="sleepQuality" type="text" ></label>
+              </section>
+              <section  class="hydration-data-inputs hidden">
+                <label for="numOfOunces">Number Of Ounces <input id="numOfOunces" type="text"></label>
+              </section>
+              <section  class="activity-data-inputs hidden">
+                <label for="minutesActive">Minutes Active <input id="minutesActive" type="text"></label>
+                <label for="numOfSteps">Number of Steps <input id="numOfSteps" type="text"></label>
+                <label for="flightsOfStairs">Flights Of Stairs <input id="flightsOfStairs" type="text"></label>
+              </section>
+              <section class="date-input hidden">
+                <input class="calender"
+                type="date"
+                id="start"
+                name="trip-start"
+                value="2020-01-22"
+                min="2019-06-15"
+                max="2020-01-22"
+            />
+              <button class="data-submit">Submit</button>
+            </section>
+          </form>
+        </section>
+        </section>
         </section>
       </aside>
     </main>
