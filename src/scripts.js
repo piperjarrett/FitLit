@@ -43,7 +43,8 @@ const dataForDay = document.querySelector(".table-data");
 const hydraData = document.querySelector(".hydration-card");
 const chart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
-const activityCard = document.querySelector(".activity-info");
+const activityCard = document.querySelector(".activity-card")
+const activityChart = document.getElementById("activityChart").getContext("2d");
 
 const changeBackground = document.querySelector(".back-color-button")
 const categoriesValue = document.querySelector(".categories-value")
@@ -60,7 +61,14 @@ submitButton.addEventListener("click", () => {
   displayMinutesActive();
 });
 
-//console.log(categoriesValue.value)
+function hide(element) {
+  element.classList.add('hidden')
+}
+
+function show(element) {
+  element.classList.remove('hidden')
+}
+
 categoriesValue.addEventListener('change', ()=> {
   const sleepInputs = document.querySelector('.sleep-data-inputs')
   const hydrationInputs = document.querySelector('.hydration-data-inputs')
@@ -71,37 +79,34 @@ categoriesValue.addEventListener('change', ()=> {
  
    if(result === 'Sleep Data'){
     selectionLabel.innerText = 'Please Enter Your Sleep Data'
-      sleepInputs.classList.remove('hidden')
-      activityInputs.classList.add('hidden')
-      hydrationInputs.classList.add('hidden')
-      dateSelector.classList.remove('hidden')
-      categoriesValue.classList.add("hidden")
+      show(sleepInputs.classList)
+      hide(activityInputs)
+      hide(hydrationInputs)
+      show(dateSelector)
 
    } else if(result ==='Hydration Data' ){
     selectionLabel.innerText = 'Please Enter Your Hydration Data'
-    sleepInputs.classList.add('hidden')
-    activityInputs.classList.add('hidden')
-    hydrationInputs.classList.remove('hidden')
-    dateSelector.classList.remove('hidden')
-    categoriesValue.classList.add("hidden")
+    hide(sleepInputs)
+    hide(activityInputs)
+    show(hydrationInputs)
+    show(dateSelector)
+    hide(categoriesValue)
     
    } else if(result === 'Activity Data' ){
     selectionLabel.innerText = 'Please Enter Your Activity Data'
-    sleepInputs.classList.add('hidden')
-    activityInputs.classList.remove('hidden')
-    hydrationInputs.classList.add('hidden')
-    dateSelector.classList.remove('hidden')
-    categoriesValue.classList.add("hidden")
+    hide(sleepInputs)
+    show(activityInputs)
+    hide(hydrationInputs)
+    show(dateSelector)
+    hide(categoriesValue)
    } else {
-    sleepInputs.classList.add('hidden')
-    activityInputs.classList.add('hidden')
-    hydrationInputs.classList.add('hidden')
-    dateSelector.classList.add('hidden')
-    categoriesValue.classList.remove("hidden")
+    hide(sleepInputs)
+    hide(activityInputs)
+    hide(hydrationInputs)
+    hide(dateSelector)
+    show(categoriesValue)
    }
 })
-
-
 
 var nextImg = 'light'
 changeBackground.addEventListener('click', () => {
@@ -393,7 +398,6 @@ function displayMilesWalked() {
 
 function displayNumberOfSteps() {
   const dateInput = inputValue.value.split("-").join("/");
-  console.log(user);
   const numberOfSteps = userActivity.data.find((activity) => {
     return activity.date === dateInput;
   });
@@ -414,4 +418,42 @@ function displayMinutesActive() {
   }
 }
 
-
+function displayActivityComparison() {
+  activity.innerHTML = "";
+  const averageSteps = userRepository.findAverageStepGoal();
+  const comparison = Math.round((user.dailyStepGoal / averageSteps) * 100);
+  Chart.defaults.color = "white";
+  let myChart = new Chart(stepChart, {
+    type: "bar",
+    data: {
+      labels: ["Your Goal", "Average User Goal"],
+      datasets: [
+        {
+          data: [user.dailyStepGoal, averageSteps],
+          backgroundColor: ["#2CB7FF", "#6947FF"],
+          borderWidth: 1,
+          borderColor: "white",
+          hoverBorderWidth: 3,
+          hoverBorderColor: "black",
+          barPercentage: 0.9,
+          categoryPercentage: 0.9,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: "Your Step Goal vs. Average User Step Goal",
+          fontSize: 20,
+        },
+        legend: {
+          display: false,
+        },
+      },
+    },
+  });
+  stepDetails.innerHTML += `<p class=chart-text>Your daily step goal is ${comparison}% compared to all average users.</p>`;
+}
