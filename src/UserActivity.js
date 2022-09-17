@@ -4,29 +4,21 @@ class UserActivity {
   }
 
   getMilesBasedOnSteps(activityDate, user) {
-    let userActivity = this.data.filter((data) => data.date === activityDate);
-    let numberOfSteps = userActivity.reduce((acc, activity) => {
-      acc += activity.numSteps;
-      return acc;
-    }, 0);
-    if (userActivity.length > 0) {
+    const userActivity = this.data.find((data) => data.date === activityDate);
+    if (userActivity) {
       const numOfStridesForMile = 5280 / user.strideLength;
-      const numberOfMilesWalked = numberOfSteps / numOfStridesForMile;
+      const numberOfMilesWalked = userActivity.numSteps / numOfStridesForMile;
       return parseFloat(numberOfMilesWalked.toFixed(2));
     } else {
       return 0.0;
     }
   }
-  getMinutesActiveByDate(activityDate) {
-    let userActivity = this.data.filter((data) => data.date === activityDate);
-    if (userActivity.length < 1) {
-      return 0;
+  getActivityDetailByDate(activityDate, detail) {
+    const userActivity = this.data.find((data) => data.date === activityDate);
+    if (userActivity) {
+      return userActivity[detail]
     } else {
-      let activeTime = userActivity.reduce((activeMinutes, activity) => {
-        activeMinutes += activity.minutesActive;
-        return activeMinutes;
-      }, 0);
-      return activeTime;
+      return 0
     }
   }
 

@@ -17,7 +17,7 @@ import User from "./User";
 import UserRepository from "./UserRepository";
 import HydrationSeries from "./HydrationSeries";
 import SleepSeries from "./SleepSeries";
-import Chart from "chart.js/auto";
+import Chart, { BarController } from "chart.js/auto";
 import UserActivity from "./UserActivity";
 
 //Global Variables
@@ -121,7 +121,6 @@ changeBackground.addEventListener('click', () => {
     changeBackground.src = img[1]
     nextImg = 'light';
   }
- 
 })
 
 promiseAll().then((responses) => {
@@ -154,7 +153,6 @@ promiseAll().then((responses) => {
   userActivity = new UserActivity(
     activityData.filter((entry) => entry.userID === user.id)
   );
-
   displayDashboard();
 });
 
@@ -419,15 +417,27 @@ function displayMinutesActive() {
 }
 
 function displayActivityComparison() {
-  activity.innerHTML = "";
-  const averageSteps = userRepository.findAverageStepGoal();
+  const dateInput = inputValue.value.split("-").join("/");
+  const numSteps = userRepository.findAverageActivityDetail(activityData, dateInput, "numSteps");
+  const flightsOfStairs = userRepository.findAverageActivityDetail(activityData, dateInput, "flightsOfStairs");
+  const minutesActive = userRepository.findAverageActivityDetail(activityData, dateInput, "minutesActive");
   const comparison = Math.round((user.dailyStepGoal / averageSteps) * 100);
   Chart.defaults.color = "white";
-  let myChart = new Chart(stepChart, {
+  let myChart = new Chart(BarController, {
     type: "bar",
     data: {
       labels: ["Your Goal", "Average User Goal"],
       datasets: [
+        {
+          data: [user.dailyStepGoal, averageSteps],
+          backgroundColor: ["#2CB7FF", "#6947FF"],
+          borderWidth: 1,
+          borderColor: "white",
+          hoverBorderWidth: 3,
+          hoverBorderColor: "black",
+          barPercentage: 0.9,
+          categoryPercentage: 0.9,
+        },
         {
           data: [user.dailyStepGoal, averageSteps],
           backgroundColor: ["#2CB7FF", "#6947FF"],
