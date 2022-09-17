@@ -9,8 +9,8 @@ class UserRepository {
   }
 
   findAverageStepGoal() {
-    const userSteps = this.allUserData.map((user) => user.dailyStepGoal);
-    const allUserSteps = userSteps.reduce((total, userStep) => {
+    const userStepGoals = this.allUserData.map((user) => user.dailyStepGoal);
+    const allUserSteps = userStepGoals.reduce((total, userStep) => {
       total += userStep;
       return total;
     }, 0);
@@ -30,13 +30,14 @@ class UserRepository {
     return parseFloat(averageSleepDetail);
   }
 
-  findAverageActivityDetail(activityData, detail) {
-    const userActivityDetail = activityData.map((user) => user[detail]);
-    const allUserActivityDetail = userActivityDetail.reduce((total, user) => {
+  findAverageActivityDetail(activityData, date, detail) {
+    const allUserActivityByDate = activityData.filter(data => data.date === date)
+    const allUserActivityDetail = allUserActivityByDate.map((user) => user[detail]);
+    const totalActivityDetail = allUserActivityDetail.reduce((total, user) => {
       total += user;
       return total;
     }, 0);
-    const averageActivityDetail = allUserActivityDetail / activityData.length;
+    const averageActivityDetail = totalActivityDetail / activityData.length;
     return Math.round(averageActivityDetail);
   }
 }

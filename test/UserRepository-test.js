@@ -42,18 +42,18 @@ describe("User Repository", () => {
     expect(averageSleepQuality).to.equal(2.8);
   });
 
-  it("should have a method to calculate average stairs climbed for all users", () => {
-    let averageFlightsClimbed = userRepo.findAverageActivityDetail(activityTestData, "flightsOfStairs");
-    expect(averageFlightsClimbed).to.equal(23);
+  it("should have a method to calculate average minutes active for all users on a given date", () => {
+    let averageMinutesActive = userRepo.findAverageActivityDetail(activityTestData, "2019/06/15", "minutesActive");
+    expect(averageMinutesActive).to.equal(53);
   });
 
-  it("should have a method to calculate average minutes active for all users", () => {
-    let averageMinutesActive = userRepo.findAverageActivityDetail(activityTestData, "minutesActive");
-    expect(averageMinutesActive).to.equal(147);
+  it("should have a method to calculate average number of steps for all users on a given date", () => {
+    let averageStepNumber = userRepo.findAverageActivityDetail(activityTestData,"2019/06/15","numSteps");
+    expect(averageStepNumber).to.equal(2781);
   });
 
-  it("should have a method to calculate average number of steps for all users", () => {
-    let averageStepNumber = userRepo.findAverageActivityDetail(activityTestData, "numSteps");
-    expect(averageStepNumber).to.equal(8315);
+  it("should have a method to calculate average number of stairs climbed for all users on a given date", () => {
+    let averageFlightNumber = userRepo.findAverageActivityDetail(activityTestData,"2019/06/15","flightsOfStairs");
+    expect(averageFlightNumber).to.equal(9);
   });
 });
