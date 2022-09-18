@@ -12,7 +12,13 @@
     <title>FitLit</title>
   </head>
   <body class="fit-lit-light">
-    <img class="back-color-button" src="./images/moon.png" alt="" />
+    <img
+      class="back-color-button"
+      src="./images/moon.png"
+      alt=""
+      role="button"
+      tabindex="0"
+    />
     <header>
       <img
         src="./images/logo_transparent.png"
@@ -84,7 +90,7 @@
             />
             <section class="activity-info"></section>
           </section>
-          <!-- <section class="activity-card"></section> -->
+          <section class="activity-card"></section>
         </section>
       </section>
       <aside class="right-nav">
@@ -120,8 +126,12 @@
                 class="categories-value"
                 name="categories"
                 id="userActivitySelect"
+                aria-expanded="true"
+                tabindex="0"
               >
-                <option value=""> --Please Select An Option --</option>
+                <option value="" tabindex="0">
+                  --Please Select An Option --</option
+                >
                 <option value="sleep"> Sleep Data</option>
                 <option value="hydration"> Hydration Data</option>
                 <option value="activity"> Activity Data</option>
