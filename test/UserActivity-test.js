@@ -24,23 +24,41 @@ describe("UserActivity", () => {
     expect(result).to.equal(0);
   });
   it("should have a method to calculate how many minutes a user was active for a given date", () => {
-    const result = userActivity.getActivityDetailByDate("2019/06/15", "minutesActive");
+    const result = userActivity.getActivityDetailByDate(
+      "2019/06/15",
+      "minutesActive"
+    );
     expect(result).to.equal(140);
   });
   it("should have a method to calculate how many flights of stairs a user climbed for a given date", () => {
-    const result = userActivity.getActivityDetailByDate("2019/06/15", "flightsOfStairs");
+    const result = userActivity.getActivityDetailByDate(
+      "2019/06/15",
+      "flightsOfStairs"
+    );
     expect(result).to.equal(16);
   });
   it("should have a method to calculate the number of steps a user has for a given date", () => {
-    const result = userActivity.getActivityDetailByDate("2019/06/15", "numSteps");
+    const result = userActivity.getActivityDetailByDate(
+      "2019/06/15",
+      "numSteps"
+    );
     expect(result).to.equal(3577);
   });
   it("should return 0 if no activity details are available for a given date", () => {
-    const minutes = userActivity.getActivityDetailByDate("2022/08/11", "minutesActive");
+    const minutes = userActivity.getActivityDetailByDate(
+      "2022/08/11",
+      "minutesActive"
+    );
     expect(minutes).to.equal(0);
-    const steps = userActivity.getActivityDetailByDate("2022/08/11", "numSteps");
+    const steps = userActivity.getActivityDetailByDate(
+      "2022/08/11",
+      "numSteps"
+    );
     expect(steps).to.equal(0);
-    const flights = userActivity.getActivityDetailByDate("2022/08/11", "flightsOfStairs");
+    const flights = userActivity.getActivityDetailByDate(
+      "2022/08/11",
+      "flightsOfStairs"
+    );
     expect(flights).to.equal(0);
   });
   it("should have a method that returns whether a user step goal was reached for a given day", () => {
@@ -69,19 +87,18 @@ describe("UserActivity", () => {
     expect(days).to.deep.equal([
       {
         userID: 1,
-        date: '2019/06/17',
+        date: "2019/06/17",
         numSteps: 14329,
         minutesActive: 168,
-        flightsOfStairs: 18
+        flightsOfStairs: 18,
       },
       {
         userID: 1,
-        date: '2019/06/20',
+        date: "2019/06/20",
         numSteps: 14478,
         minutesActive: 140,
-        flightsOfStairs: 12
-      }
-    ])
+        flightsOfStairs: 12,
+      },
+    ]);
   });
-
 });
