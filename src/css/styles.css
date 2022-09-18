@@ -68,7 +68,7 @@ main {
 
 .friends-container,
 .steps-container,
-.placeholder-container,
+.activity-container,
 .hydration-container,
 .sleep-container,
 .user-container {
@@ -186,14 +186,11 @@ main {
   border: 1px solid #6947ff;
 }
 
-.hydra-chart {
-  margin-top: 15px;
-}
-
 .hydration-container {
   color: black;
   flex-direction: column;
   width: auto;
+  height: auto;
   align-content: center;
   text-align: center;
   background-color: #2cb7ff;
@@ -212,7 +209,7 @@ main {
 }
 
 .steps-container,
-.placeholder-container {
+.activity-container {
   color: rgb(0, 0, 0);
   width: auto;
   align-items: center;
