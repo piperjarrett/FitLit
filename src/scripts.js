@@ -57,6 +57,16 @@ const numOfOunces = document.querySelector("#numOfOunces");
 const minsActive = document.querySelector("#minutesActive");
 const numOfSteps = document.querySelector("#numOfSteps");
 const flightsOfStairs = document.querySelector("#flightsOfStairs");
+const sleepDataError = document.querySelector(".error-message-sleepData");
+const sleepQualityError = document.querySelector(".error-message-sleepQuality");
+const hydrationError = document.querySelector(".error-message-hydration");
+const minutesActiveError = document.querySelector(
+  ".error-message-minutesActive"
+);
+const numOfStepsError = document.querySelector(".error-message-numOfSteps");
+const flightsOfStairsError = document.querySelector(
+  ".error-message-flightsOfStairs"
+);
 
 let dateInput = inputValue.value.split("-").join("/");
 // Event Listeners
@@ -73,7 +83,8 @@ submitButton.addEventListener("click", () => {
 });
 
 //console.log(categoriesValue.value)
-formSubmitButton.addEventListener("click", getDataToPost);
+// formSubmitButton.addEventListener("click", getDataToPost);
+formSubmitButton.addEventListener("click", displayErrorMessage);
 categoriesValue.addEventListener("change", () => {
   const sleepInputs = document.querySelector(".sleep-data-inputs");
   const hydrationInputs = document.querySelector(".hydration-data-inputs");
@@ -165,7 +176,6 @@ function getRandomIndex(userData) {
 
 function getDataToPost(event) {
   event.preventDefault();
-
   const calenderDate = calenderInput.value.split("-").join("/");
   dateInput = calenderDate;
   if (result === "Sleep Data") {
@@ -198,6 +208,56 @@ function getDataToPost(event) {
   promiseAll();
   displayDashboard();
   console.log(user.userSleepData);
+}
+
+function displayErrorMessage() {
+  if (
+    (typeof hoursSlept.value === 'number' || hoursSlept.value = "") &&
+    (typeof sleepQuality.value === 'number' || sleepQuality.value = "")
+  ) {
+    hoursSleptError.innerText = "Please enter a number";
+    sleepQualityError.innertext = "Please enter a number";
+  } else if (typeof hoursSlept.value === 'number' || hoursSlept.value = "")) {
+    hoursSleptError.innerText = "Please enter a number";
+  } else if (typeof sleepQuality.value === 'number' || sleepQuality.value = "")) {
+    sleepQualityError.innertext = "Please enter a number";
+  } else if (typeof numOfOunces.value === 'number' || numOfOunces.value = "")) {
+    hydrationError.innertext = "Please enter a number";
+  } else if (
+    (typeof minsActive.value === 'number' || minsActive.value = "") &&
+    (isNaN(numOfSteps.value) || numOfSteps.value = "") &&
+    (isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")
+  ) {
+    minutesActiveError.innertext = "Please enter a number";
+    numberOfSteps.innertext = "Please enter a number";
+    flightsOfStairsError.innertext = "Please enter a number";
+  } else if (
+    (isNaN(minsActive.value) || minsActive.value = "") &&
+    (isNaN(numOfSteps.value) || numOfSteps.value = "")
+  ) {
+    minutesActiveError.innertext = "Please enter a number";
+    numberOfSteps.innertext = "Please enter a number";
+  } else if (
+    (isNaN(minsActive.value) || minsActive.value = "") &&
+    (isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")
+  ) {
+    minutesActiveError.innertext = "Please enter a number";
+    flightsOfStairsError.innertext = "Please enter a number";
+  } else if (
+    (isNaN(numOfSteps.value) || numOfSteps.value = "") &&
+    (isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")
+  ) {
+    numberOfSteps.innertext = "Please enter a number";
+    flightsOfStairsError.innertext = "Please enter a number";
+  } else if ((isNaN(minsActive.value) || minsActive.value = "")) {
+    minutesActiveError.innertext = "Please enter a number";
+  } else if ((isNaN(numOfSteps.value) || numOfSteps.value = "")) {
+    numberOfSteps.innertext = "Please enter a number";
+  } else if ((isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")) {
+    flightsOfStairsError.innertext = "Please enter a number";
+  } else {
+    getDataToPost();
+  }
 }
 
 function displayDashboard() {
