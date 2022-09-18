@@ -6,11 +6,12 @@ import "./images/water-bottle.png";
 import "./images/logo_transparent.png";
 import "./images/avatar-male.png";
 import "./images/gym.png";
-import "./images/moon.png"
-import "./images/sun.svg"
+import "./images/moon.png";
+import "./images/sun.svg";
 
 //Import fetch
 import { promiseAll } from "./apiCalls.js";
+import { postData } from "./apiCalls.js";
 
 //Import Classes
 import User from "./User";
@@ -38,13 +39,32 @@ const stepDetails = document.querySelector(".step-card");
 const avgSleepHours = document.querySelector(".average-sleep-hours");
 const avgQualitySleep = document.querySelector(".average-quality-sleep");
 const sleepForWeek = document.querySelector(".sleep-for-week");
-const inputValue = document.querySelector("input");
-const submitButton = document.querySelector("button");
+const inputValue = document.querySelector(".calender-one");
+const submitButton = document.querySelector(".submit");
 const hydraChart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
-const activityCard = document.querySelector(".activity-card")
-const changeBackground = document.querySelector(".back-color-button")
-const categoriesValue = document.querySelector(".categories-value")
+const activityCard = document.querySelector(".activity-info");
+const changeBackground = document.querySelector(".back-color-button");
+const categoriesValue = document.querySelector(".categories-value");
+const calenderInput = document.querySelector(".calender");
+const dataInputForm = document.querySelector(".adding-data-section");
+const formSubmitButton = document.querySelector(".data-submit");
+const hoursSlept = document.querySelector("#hoursSlept");
+const sleepQuality = document.querySelector("#sleepQuality");
+const numOfOunces = document.querySelector("#numOfOunces");
+const minsActive = document.querySelector("#minutesActive");
+const numOfSteps = document.querySelector("#numOfSteps");
+const flightsOfStairs = document.querySelector("#flightsOfStairs");
+const sleepDataError = document.querySelector(".error-message-sleepData");
+const sleepQualityError = document.querySelector(".error-message-sleepQuality");
+const hydrationError = document.querySelector(".error-message-hydration");
+const minutesActiveError = document.querySelector(
+  ".error-message-minutesActive"
+);
+const numOfStepsError = document.querySelector(".error-message-numOfSteps");
+const flightsOfStairsError = document.querySelector(
+  ".error-message-flightsOfStairs"
+);
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
@@ -55,15 +75,8 @@ submitButton.addEventListener("click", () => {
   displayNumberOfSteps();
   displayMinutesActive();
 });
-
-function hide(element) {
-  element.classList.add('hidden')
-}
-
-function show(element) {
-  element.classList.remove('hidden')
-}
-
+formSubmitButton.addEventListener("click", getDataToPost);
+dataInputForm.addEventListener("input", enableButton);
 categoriesValue.addEventListener('change', ()=> {
   const sleepInputs = document.querySelector('.sleep-data-inputs')
   const hydrationInputs = document.querySelector('.hydration-data-inputs')
@@ -71,7 +84,6 @@ categoriesValue.addEventListener('change', ()=> {
   const dateSelector = document.querySelector('.date-input')
   const selectionLabel = document.querySelector('.selection-label')
  let result = categoriesValue.options[categoriesValue.selectedIndex].text;
- 
    if(result === 'Sleep Data'){
     selectionLabel.innerText = 'Please Enter Your Sleep Data'
       show(sleepInputs)
@@ -156,8 +168,61 @@ promiseAll().then((responses) => {
   displayDashboard();
 });
 
+function hide(element) {
+  element.classList.add('hidden')
+}
+
+function show(element) {
+  element.classList.remove('hidden')
+}
+
 function getRandomIndex(userData) {
   return Math.floor(Math.random() * userData.length);
+}
+
+function getDataToPost(event) {
+  event.preventDefault();
+  const calenderDate = calenderInput.value.split("-").join("/");
+  inputValue.value = calenderInput.value;
+  dateInput = calenderDate;
+  if (result === "Sleep Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      hoursSlept: parseInt(hoursSlept.value),
+      sleepQuality: parseInt(sleepQuality.value),
+    };
+    postData("sleep", data);
+  } else if (result === "Hydration Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      numOunces: parseInt(numOfOunces.value),
+    };
+    postData("hydration", data);
+  } else if (result === "Activity Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      numSteps: parseInt(minsActive.value),
+      minutesActive: parseInt(numOfSteps.value),
+      flightsOfStairs: parseInt(flightsOfStairs.value),
+    };
+    postData("activity", data);
+  }
+  promiseAll();
+}
+
+function enableButton() {
+  if (hoursSlept.value && sleepQuality.value) {
+    formSubmitButton.disabled = false;
+  } else if (numOfOunces.value) {
+    formSubmitButton.disabled = false;
+  } else if (minsActive.value && numOfSteps.value && flightsOfStairs.value) {
+    formSubmitButton.disabled = false;
+  } else {
+    formSubmitButton.disabled = true;
+  }
 }
 
 function displayDashboard() {
@@ -214,7 +279,6 @@ function displayAverageSleep() {
     "sleepQuality"
   )}</p>`;
 }
-
 
 function displaySleepForAWeek() {
   formatInputDate()
@@ -386,7 +450,7 @@ function displayMinutesActive() {
     activityCard.innerHTML += `</p>and were active for ${minsActive} minutes</p>`;
   }
 }
-
+//still editing this function
 function displayActivityDetailComparison () {
   formatInputDate() 
   const allNumSteps = userRepository.findAverageActivityDetail(activityData, dateInput, "numSteps");
@@ -435,3 +499,4 @@ function displayActivityDetailComparison () {
       A Different Week To See Your Weekly Report <p>`;
     }
   }
+  

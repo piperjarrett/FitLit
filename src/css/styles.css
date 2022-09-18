@@ -2,12 +2,11 @@ body,
 html {
   font-family: "Roboto Mono", monospace;
 }
-.fit-lit-light{ 
-  background-color:rgb(255, 255, 255);
-
+.fit-lit-light {
+  background-color: rgb(255, 255, 255);
 }
 
-.fit-lit-dark{
+.fit-lit-dark {
   background-color: black;
 }
 
@@ -16,7 +15,7 @@ html {
 }
 
 .back-color-button {
-  width:2vw;
+  width: 2vw;
   position: absolute;
   left: 92vw;
   margin-top: 2vh;
@@ -62,7 +61,7 @@ main {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content:flex-start;
+  justify-content: flex-start;
   margin: 2vw;
 }
 
@@ -125,10 +124,18 @@ main {
   border-radius: 12px;
 }
 
-.submit:hover, .data-submit:hover {
+.submit:hover,
+.data-submit:hover {
   cursor: pointer;
   box-shadow: 1px 0 3px #cc66ff, -1px 0 3px #cc66ff, 0 1px 3px #cc66ff,
     0 -1px 3px#CC66FF;
+}
+
+.data-submit:disabled {
+  background-color: #d5d5e3;
+  color: #7d7d7d;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .habit-label {
@@ -156,7 +163,7 @@ main {
   width: 100%;
 }
 
-.friend img{
+.friend img {
   width: 20px;
   height: 20px;
 }
@@ -194,7 +201,7 @@ main {
   align-content: center;
   text-align: center;
   background-color: #2cb7ff;
-  margin-left:2vw;
+  margin-left: 2vw;
   padding-top: 10px;
   padding-right: 1vw;
   padding-bottom: 1vw;
@@ -204,7 +211,7 @@ main {
 .bottom-nav {
   display: flex;
   flex-direction: row;
-  justify-content:flex-start;
+  justify-content: flex-start;
   margin: 2vw;
 }
 
@@ -220,13 +227,11 @@ main {
   margin-bottom: 25px;
 }
 
-
 .placeholder-container {
   flex-direction: column;
   width: 20vw;
   margin-left: 1.5vw;
 }
-
 
 .step-comparison-message {
   font-size: 10px;
@@ -280,8 +285,7 @@ p {
 .email,
 .stride-length,
 .step-goal {
-  font-size:1vw;
-
+  font-size: 1vw;
 }
 
 /* adding data */
@@ -292,7 +296,7 @@ p {
   border-radius: 12px;
 }
 
-.adding-data-section{
+.adding-data-section {
   display: flex;
   flex-direction: column;
   margin-top: 5vh;
@@ -300,9 +304,8 @@ p {
   color: aliceblue;
 }
 
-.adding-data-form{
+.adding-data-form {
   align-self: center;
-
 }
 
 #hoursSlept,
@@ -318,10 +321,10 @@ p {
 .sleep-data-inputs,
 .hydration-data-inputs,
 .activity-data-inputs {
- display: flex;
- flex-direction: row;
- justify-content:space-around;
- flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .hidden {

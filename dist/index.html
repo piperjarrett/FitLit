@@ -12,7 +12,7 @@
     <title>FitLit</title>
   </head>
   <body class="fit-lit-light">
-    <img class="back-color-button"src="./images/moon.png" alt="">
+    <img class="back-color-button" src="./images/moon.png" alt="" />
     <header>
       <img
         src="./images/logo_transparent.png"
@@ -21,10 +21,8 @@
         height="140px"
         width="350px"
       />
-
     </header>
 
-    
     <main class="">
       <section class="left-nav">
         <section class="vitals-section">
@@ -78,6 +76,15 @@
           </section>
           <section class="activity-container">
             <img
+              src="./images/gym.png"
+              id="weightsImg"
+              alt="weights image"
+              height="50px"
+              width="50px"
+            />
+            <section class="activity-card"></section>
+            <section class="activity-info"></section>
+          </section>
             src="./images/gym.png"
             id="weightsImg"
             alt="weights image"
@@ -97,6 +104,7 @@
           >
           <section class="date-form">
             <input
+              class="calender-one"
               type="date"
               id="start"
               name="trip-start"
@@ -113,40 +121,89 @@
         </section>
         <section class="add-form-container">
           <section class="adding-data-section">
-          <form class="adding-data-form" action="">
-              <label class="selection-label" for="userActivitySelect">SELECT CATEGORY </label>
-              <select class="categories-value" name="categories" id="userActivitySelect">
-                  <option value=""> --Please Select An Option --</option>
-                  <option value="sleep"> Sleep Data</option>
-                  <option value="hydration"> Hydration Data</option>
-                  <option value="activity"> Activity Data</option>
+            <form class="adding-data-form" action="">
+              <label class="selection-label" for="userActivitySelect"
+                >SELECT CATEGORY
+              </label>
+              <select
+                class="categories-value"
+                name="categories"
+                id="userActivitySelect"
+              >
+                <option value=""> --Please Select An Option --</option>
+                <option value="sleep"> Sleep Data</option>
+                <option value="hydration"> Hydration Data</option>
+                <option value="activity"> Activity Data</option>
               </select>
 
-                <section  class="sleep-data-inputs hidden">
-                <label for="hoursSlept">Hours Slept <input id="hoursSlept" type="text"></label>
-                <label for="sleepQuality">Sleep Quality <input id="sleepQuality" type="text" ></label>
+              <section class="sleep-data-inputs hidden">
+                <label for="hoursSlept"
+                  >Hours Slept
+                  <input
+                    id="hoursSlept"
+                    type="number"
+                    placeholder="enter number"
+                /></label>
+                <p class="error-message-sleepData"></p>
+                <label for="sleepQuality"
+                  >Sleep Quality
+                  <input
+                    id="sleepQuality"
+                    type="number"
+                    placeholder="enter number"
+                /></label>
+                <p class="error-message-sleepQuality"></p>
               </section>
-              <section  class="hydration-data-inputs hidden">
-                <label for="numOfOunces">Number Of Ounces <input id="numOfOunces" type="text"></label>
+              <section class="hydration-data-inputs hidden">
+                <label for="numOfOunces"
+                  >Number Of Ounces
+                  <input
+                    id="numOfOunces"
+                    type="number"
+                    placeholder="enter number"
+                /></label>
+                <p class="error-message-hydration"></p>
               </section>
-              <section  class="activity-data-inputs hidden">
-                <label for="minutesActive">Minutes Active <input id="minutesActive" type="text"></label>
-                <label for="numOfSteps">Number of Steps <input id="numOfSteps" type="text"></label>
-                <label for="flightsOfStairs">Flights Of Stairs <input id="flightsOfStairs" type="text"></label>
+              <section class="activity-data-inputs hidden">
+                <label for="minutesActive"
+                  >Minutes Active
+                  <input
+                    id="minutesActive"
+                    type="number"
+                    placeholder="enter number"
+                /></label>
+                <p class="error-message-minutesActive"></p>
+                <label for="numOfSteps"
+                  >Number of Steps
+                  <input
+                    id="numOfSteps"
+                    type="number"
+                    placeholder="enter number"
+                /></label>
+                <p class="error-message-numOfSteps"></p>
+                <label for="flightsOfStairs"
+                  >Flights Of Stairs
+                  <input
+                    id="flightsOfStairs"
+                    type="number"
+                    placeholder="enter number"
+                /></label>
+                <p class="error-message-flightsOfStairss"></p>
               </section>
               <section class="date-input hidden">
-                <input class="calender"
-                type="date"
-                id="start"
-                name="trip-start"
-                value="2020-01-22"
-                min="2019-06-15"
-                max="2020-01-22"
-            />
-              <button class="data-submit">Submit</button>
-            </section>
-          </form>
-        </section>
+                <input
+                  class="calender"
+                  type="date"
+                  id="start"
+                  name="trip-start"
+                  value="2020-01-21"
+                  min="2019-06-15"
+                  max="2022-09-19"
+                />
+                <button class="data-submit" disabled>Submit</button>
+              </section>
+            </form>
+          </section>
         </section>
       </aside>
     </main>
