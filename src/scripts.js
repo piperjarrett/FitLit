@@ -49,6 +49,7 @@ const activityCard = document.querySelector(".activity-info");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
 const calenderInput = document.querySelector(".calender");
+const dataInputForm = document.querySelector(".adding-data-section");
 const formSubmitButton = document.querySelector(".data-submit");
 let result = categoriesValue.options[categoriesValue.selectedIndex].text;
 const hoursSlept = document.querySelector("#hoursSlept");
@@ -83,8 +84,8 @@ submitButton.addEventListener("click", () => {
 });
 
 //console.log(categoriesValue.value)
-// formSubmitButton.addEventListener("click", getDataToPost);
-formSubmitButton.addEventListener("click", displayErrorMessage);
+formSubmitButton.addEventListener("click", getDataToPost);
+dataInputForm.addEventListener("input", enableButton);
 categoriesValue.addEventListener("change", () => {
   const sleepInputs = document.querySelector(".sleep-data-inputs");
   const hydrationInputs = document.querySelector(".hydration-data-inputs");
@@ -175,7 +176,7 @@ function getRandomIndex(userData) {
 }
 
 function getDataToPost(event) {
-  event.preventDefault();
+  event.preventDefault;
   const calenderDate = calenderInput.value.split("-").join("/");
   dateInput = calenderDate;
   if (result === "Sleep Data") {
@@ -203,60 +204,17 @@ function getDataToPost(event) {
     };
     postData("activity", data);
   }
-  // inputValue.value = calenderInput.value;
-  // dateInput = calenderDate;
   promiseAll();
-  displayDashboard();
-  console.log(user.userSleepData);
 }
-
-function displayErrorMessage() {
-  if (
-    (typeof hoursSlept.value === 'number' || hoursSlept.value = "") &&
-    (typeof sleepQuality.value === 'number' || sleepQuality.value = "")
-  ) {
-    hoursSleptError.innerText = "Please enter a number";
-    sleepQualityError.innertext = "Please enter a number";
-  } else if (typeof hoursSlept.value === 'number' || hoursSlept.value = "")) {
-    hoursSleptError.innerText = "Please enter a number";
-  } else if (typeof sleepQuality.value === 'number' || sleepQuality.value = "")) {
-    sleepQualityError.innertext = "Please enter a number";
-  } else if (typeof numOfOunces.value === 'number' || numOfOunces.value = "")) {
-    hydrationError.innertext = "Please enter a number";
-  } else if (
-    (typeof minsActive.value === 'number' || minsActive.value = "") &&
-    (isNaN(numOfSteps.value) || numOfSteps.value = "") &&
-    (isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")
-  ) {
-    minutesActiveError.innertext = "Please enter a number";
-    numberOfSteps.innertext = "Please enter a number";
-    flightsOfStairsError.innertext = "Please enter a number";
-  } else if (
-    (isNaN(minsActive.value) || minsActive.value = "") &&
-    (isNaN(numOfSteps.value) || numOfSteps.value = "")
-  ) {
-    minutesActiveError.innertext = "Please enter a number";
-    numberOfSteps.innertext = "Please enter a number";
-  } else if (
-    (isNaN(minsActive.value) || minsActive.value = "") &&
-    (isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")
-  ) {
-    minutesActiveError.innertext = "Please enter a number";
-    flightsOfStairsError.innertext = "Please enter a number";
-  } else if (
-    (isNaN(numOfSteps.value) || numOfSteps.value = "") &&
-    (isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")
-  ) {
-    numberOfSteps.innertext = "Please enter a number";
-    flightsOfStairsError.innertext = "Please enter a number";
-  } else if ((isNaN(minsActive.value) || minsActive.value = "")) {
-    minutesActiveError.innertext = "Please enter a number";
-  } else if ((isNaN(numOfSteps.value) || numOfSteps.value = "")) {
-    numberOfSteps.innertext = "Please enter a number";
-  } else if ((isNaN(flightsOfStairs.value) || flightsOfStairs.value = "")) {
-    flightsOfStairsError.innertext = "Please enter a number";
+function enableButton() {
+  if (hoursSlept.value && sleepQuality.value) {
+    formSubmitButton.disabled = false;
+  } else if (numOfOunces.value) {
+    formSubmitButton.disabled = false;
+  } else if (minsActive.value && numOfSteps.value && flightsOfStairs.value) {
+    formSubmitButton.disabled = false;
   } else {
-    getDataToPost();
+    formSubmitButton.disabled = true;
   }
 }
 
