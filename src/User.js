@@ -13,6 +13,7 @@ class User {
     this.friends = userData.friends;
     this.userSleepData = new SleepSeries();
     this.userHydrationData = new HydrationSeries();
+    this.userActivityData = new UserActivity();
   }
 
   getFirstName() {

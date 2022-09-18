@@ -7,7 +7,7 @@ const userData = require("../src/data/UserTestData");
 describe("UserActivity", () => {
   let userActivity;
   let user;
-  let userTestData;
+
   beforeEach(() => {
     userActivity = new UserActivity(
       userActivityTestData.filter((data) => data.userID === 1)
@@ -16,45 +16,89 @@ describe("UserActivity", () => {
   });
 
   it("should return the miles a user has walked based on their number of steps specified by a date (using the strideLength)", () => {
-    const result = userActivity.milesBasedOnSteps("2019/06/15", user);
+    const result = userActivity.getMilesBasedOnSteps("2019/06/15", user);
     expect(result).to.equal(2.91);
   });
-  it("should only work if data is available for date", () => {
-    const result = userActivity.milesBasedOnSteps("2022/08/11", user);
+  it("should only calculate miles if step data is available for given date", () => {
+    const result = userActivity.getMilesBasedOnSteps("2022/08/11", user);
     expect(result).to.equal(0);
   });
   it("should have a method to calculate how many minutes a user was active for a given date", () => {
-    const result = userActivity.minutesActive("2019/06/15", user);
+    const result = userActivity.getActivityDetailByDate(
+      "2019/06/15",
+      "minutesActive"
+    );
     expect(result).to.equal(140);
   });
-  it("should only work if data is available for date", () => {
-    const result = userActivity.minutesActive("2022/08/11", user);
-    expect(result).to.equal(0);
+  it("should have a method to calculate how many flights of stairs a user climbed for a given date", () => {
+    const result = userActivity.getActivityDetailByDate(
+      "2019/06/15",
+      "flightsOfStairs"
+    );
+    expect(result).to.equal(16);
   });
-  it("should create a method that returns whether a user step goal was reached for a given day", () => {
-    const result = userActivity.stepGoalForGivenDay("2019/06/15", user);
+  it("should have a method to calculate the number of steps a user has for a given date", () => {
+    const result = userActivity.getActivityDetailByDate(
+      "2019/06/15",
+      "numSteps"
+    );
+    expect(result).to.equal(3577);
+  });
+  it("should return 0 if no activity details are available for a given date", () => {
+    const minutes = userActivity.getActivityDetailByDate(
+      "2022/08/11",
+      "minutesActive"
+    );
+    expect(minutes).to.equal(0);
+    const steps = userActivity.getActivityDetailByDate(
+      "2022/08/11",
+      "numSteps"
+    );
+    expect(steps).to.equal(0);
+    const flights = userActivity.getActivityDetailByDate(
+      "2022/08/11",
+      "flightsOfStairs"
+    );
+    expect(flights).to.equal(0);
+  });
+  it("should have a method that returns whether a user step goal was reached for a given day", () => {
+    const result = userActivity.compareStepGoalByDate("2019/06/15", user);
     expect(result).to.equal(false);
     user = new User(userData[1]);
     userActivity = new UserActivity(
       userActivityTestData.filter((data) => data.userID === 2)
     );
-    const resultTwo = userActivity.stepGoalForGivenDay("2019/06/26", user);
+    const resultTwo = userActivity.compareStepGoalByDate("2019/06/26", user);
     expect(resultTwo).to.equal(true);
   });
-  it("should create a method that finds all the days where the user exceeded their step goal", () => {
-    const resultTwo = userActivity.allDaysExceedingStepGoal(user);
-    expect(resultTwo).to.equal("Sorry you haven't exceeded your step goal.");
-    user = new User(userData[1]);
-    userActivity = new UserActivity(
-      userActivityTestData.filter((data) => data.userID === 2)
-    );
-    const result = userActivity.allDaysExceedingStepGoal(user);
-    expect(result).to.equal(
-      "You exceeded your step goal on 2019/06/26 by 6522 steps"
-    );
+
+  it("should have a method to calculate average minutes active for a given week", () => {
+    const result = userActivity.getMinutesActiveForWeek("2019/06/21", user);
+    expect(result).to.equal(171);
   });
-  it("should create a method that finds a users all-time stair climbing record", () => {
+
+  it("should have a method that finds a users all-time stair climbing record", () => {
     const resultTwo = userActivity.allTimeStairClimbingRecord();
-    expect(resultTwo).to.equal(28);
+    expect(resultTwo).to.equal(36);
+  });
+
+  it("should have a method that finds all days where the user number of steps exceeded their step goal", () => {
+    const days = userActivity.allDaysExceedStepGoal(user);
+    expect(days).to.deep.equal([
+      {
+        userID: 1,
+        date: "2019/06/17",
+        numSteps: 14329,
+        minutesActive: 168,
+        flightsOfStairs: 18,
+      },
+      {
+        userID: 1,
+        date: "2019/06/20",
+        numSteps: 14478,
+        minutesActive: 140,
+        flightsOfStairs: 12,
+      },
+    ]);
   });
 });
