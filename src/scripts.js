@@ -12,6 +12,7 @@ import "./images/sun.svg";
 //Import fetch
 import { promiseAll } from "./apiCalls.js";
 import { postData } from "./apiCalls.js";
+
 //Import Classes
 import User from "./User";
 import UserRepository from "./UserRepository";
@@ -19,18 +20,6 @@ import HydrationSeries from "./HydrationSeries";
 import SleepSeries from "./SleepSeries";
 import Chart from "chart.js/auto";
 import UserActivity from "./UserActivity";
-
-// Test data
-// const userActivityTestData = require("../data/userActivityTestData");
-//Global Variables
-let user;
-let userRepository;
-let allUsers;
-let userData;
-let hydrationData;
-let sleepData;
-let userActivity;
-let activityData;
 
 // Query Selectors
 const userDetails = document.querySelector(".user-card");
@@ -69,9 +58,18 @@ const flightsOfStairsError = document.querySelector(
   ".error-message-flightsOfStairs"
 );
 
+//Gloabl Variables
+let user;
+let userRepository;
+let allUsers;
+let userData;
+let hydrationData;
+let sleepData;
+let userActivity;
+let activityData;
 let dateInput = inputValue.value.split("-").join("/");
-// Event Listeners
 
+// Event Listeners
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
   displaySleepForAWeek();
@@ -82,8 +80,6 @@ submitButton.addEventListener("click", () => {
   displayNumberOfSteps();
   displayMinutesActive();
 });
-
-//console.log(categoriesValue.value)
 formSubmitButton.addEventListener("click", getDataToPost);
 dataInputForm.addEventListener("input", enableButton);
 categoriesValue.addEventListener("change", () => {
@@ -176,8 +172,9 @@ function getRandomIndex(userData) {
 }
 
 function getDataToPost(event) {
-  event.preventDefault;
+  event.preventDefault();
   const calenderDate = calenderInput.value.split("-").join("/");
+  inputValue.value = calenderInput.value;
   dateInput = calenderDate;
   if (result === "Sleep Data") {
     let data = {
@@ -206,6 +203,7 @@ function getDataToPost(event) {
   }
   promiseAll();
 }
+
 function enableButton() {
   if (hoursSlept.value && sleepQuality.value) {
     formSubmitButton.disabled = false;
