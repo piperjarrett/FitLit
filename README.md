@@ -24,13 +24,15 @@ FitLit is an interactive website that tracks fitness activities, sleep, and hydr
 - Write modular, reusable code that follows SRP (single responsibility principle).
 - Use object and array prototype methods to perform data manipulation. 
 - Implement a robust testing suite using TDD (test driven development).
-- Make network requests to retrieve data. 
+- Work with local server and make network requests to API endpoints to retrieve and manipulate data.
 - Use GitHub Projects and Issues to track project management and progress amongst the team. 
 - Use Webpack to bundle our files.
-- Implement Chart.js package to display meaningful data to the user in a more visually appealing way. 
+- Ensure our app follows best practices for accessibility.
+- Utilize proper error handling for our users to ensure they get data and submit POST requests. 
+- Implement Chart.js package to display meaningful data to the user in a visually appealing way. 
 
 ## Features
-Athlete (user) is randomly generated upon FitLit page load and they are greeted with a welcoming dashboard of their own sleep, hydration, and step (activity) data. These data are also compared against all users to show the user how they stack up against the competition! They can see their user profile information such as email and address as well. The user can select a date to display relevant data for that date and the previous week. 
+Athlete (user) is randomly generated upon FitLit page load and they are greeted with a welcoming dashboard of their own sleep, hydration, and activity data. These data are also compared against all users to show the user how they stack up against the competition! They can see their user profile information such as email and address as well. The user can select a date to display relevant data for that date and the previous week. 
 
 ![fitlit_gif](https://user-images.githubusercontent.com/18154724/188334563-7f259183-e2f7-4ab2-808c-944092cb5f44.gif)
 
@@ -42,10 +44,10 @@ Athlete (user) is randomly generated upon FitLit page load and they are greeted 
 5. Enjoy!
 
 ## Future Additions
-- Adding data points using post to our data model such as a sleep data point or an activity for a current date. 
+- Adding additional charts or widgets to display the data to the user in an image instead of just text.
 
 ## Technologies
-This project used JavaScript, HTML, and CSS primarily. Test driven development using Mocha and Chai was also used. Additional technologies learned specifically for this project included Webpack, Chart.js, and making network requests to fetch information from an API. 
+This project used JavaScript, HTML, and CSS primarily. Test driven development using Mocha and Chai was also used. Additional technologies learned specifically for this project included Webpack, Chart.js, testing accessibility using LightHouse, and making network requests to fetch information from an API. 
 
 ## Contributors
 This project was built by a group of three Front End Engineering students at Turing School of Software and Design: 
