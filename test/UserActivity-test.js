@@ -147,23 +147,9 @@ describe("UserActivity", () => {
     expect(resultTwo).to.equal(36);
   });
 
-  it("should have a method that finds all days where the user number of steps exceeded their step goal", () => {
+  it("should have a method that find the length of the all days where the user number of steps exceeded their step goal", () => {
     const days = userActivity.allDaysExceedStepGoal(user);
-    expect(days).to.deep.equal([
-      {
-        userID: 1,
-        date: "2019/06/17",
-        numSteps: 14329,
-        minutesActive: 168,
-        flightsOfStairs: 18,
-      },
-      {
-        userID: 1,
-        date: "2019/06/20",
-        numSteps: 14478,
-        minutesActive: 140,
-        flightsOfStairs: 12,
-      },
-    ]);
+    expect(days).to.equal(2);
   });
+
 });
