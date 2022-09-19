@@ -11,6 +11,7 @@ import "./images/sun.svg";
 
 //Import fetch
 import { promiseAll } from "./apiCalls.js";
+import { postData } from "./apiCalls.js";
 
 //Import Classes
 import User from "./User";
@@ -32,21 +33,32 @@ let dateInput;
 let myChart = null;
 
 // Query Selectors
+const mainPage = document.querySelector("main");
 const userDetails = document.querySelector(".user-card");
 const friendsList = document.querySelector(".friends-card");
 const stepDetails = document.querySelector(".step-card");
 const avgSleepHours = document.querySelector(".average-sleep-hours");
 const avgQualitySleep = document.querySelector(".average-quality-sleep");
 const sleepForWeek = document.querySelector(".sleep-for-week");
-const inputValue = document.querySelector("input");
-const submitButton = document.querySelector("button");
+const inputValue = document.querySelector(".calender-one");
+const submitButton = document.querySelector(".submit");
 const hydraChart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
 const activityUser = document.querySelector(".activity-user-info");
 const activityChart = document.querySelector(".activity-chart");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
-const compareActivityChart=document.querySelector(".compare-activity")
+const compareActivityChart = document.querySelector(".compare-activity")
+const calenderInput = document.querySelector(".calender");
+const dataInputForm = document.querySelector(".adding-data-section");
+const formSubmitButton = document.querySelector(".data-submit");
+const hoursSlept = document.querySelector("#hoursSlept");
+const sleepQuality = document.querySelector("#sleepQuality");
+const numOfOunces = document.querySelector("#numOfOunces");
+const minsActive = document.querySelector("#minutesActive");
+const numOfSteps = document.querySelector("#numOfSteps");
+const flightsOfStairs = document.querySelector("#flightsOfStairs");
+const result = categoriesValue.options[categoriesValue.selectedIndex].text;
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
@@ -58,22 +70,14 @@ submitButton.addEventListener("click", () => {
   displayActivityForWeek();
   displayActivityComparison();
 });
-
-function hide(element) {
-  element.classList.add("hidden");
-}
-
-function show(element) {
-  element.classList.remove("hidden");
-}
-
+formSubmitButton.addEventListener("click", getDataToPost);
+dataInputForm.addEventListener("input", enableButton);
 categoriesValue.addEventListener("change", () => {
   const sleepInputs = document.querySelector(".sleep-data-inputs");
   const hydrationInputs = document.querySelector(".hydration-data-inputs");
   const activityInputs = document.querySelector(".activity-data-inputs");
   const dateSelector = document.querySelector(".date-input");
   const selectionLabel = document.querySelector(".selection-label");
-  let result = categoriesValue.options[categoriesValue.selectedIndex].text;
 
   if (result === "Sleep Data") {
     selectionLabel.innerText = "Please Enter Your Sleep Data";
@@ -157,8 +161,61 @@ promiseAll().then((responses) => {
   displayDashboard();
 });
 
+function hide(element) {
+  element.classList.add("hidden");
+}
+
+function show(element) {
+  element.classList.remove("hidden");
+}
+
 function getRandomIndex(userData) {
   return Math.floor(Math.random() * userData.length);
+}
+
+function getDataToPost(event) {
+  event.preventDefault();
+  const calenderDate = calenderInput.value.split("-").join("/");
+  inputValue.value = calenderInput.value;
+  dateInput = calenderDate;
+  if (result === "Sleep Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      hoursSlept: parseInt(hoursSlept.value),
+      sleepQuality: parseInt(sleepQuality.value),
+    };
+    postData("sleep", data);
+  } else if (result === "Hydration Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      numOunces: parseInt(numOfOunces.value),
+    };
+    postData("hydration", data);
+  } else if (result === "Activity Data") {
+    let data = {
+      userID: user.id,
+      date: calenderDate,
+      numSteps: parseInt(minsActive.value),
+      minutesActive: parseInt(numOfSteps.value),
+      flightsOfStairs: parseInt(flightsOfStairs.value),
+    };
+    postData("activity", data);
+  }
+  promiseAll();
+}
+
+function enableButton() {
+  if (hoursSlept.value && sleepQuality.value) {
+    formSubmitButton.disabled = false;
+  } else if (numOfOunces.value) {
+    formSubmitButton.disabled = false;
+  } else if (minsActive.value && numOfSteps.value && flightsOfStairs.value) {
+    formSubmitButton.disabled = false;
+  } else {
+    formSubmitButton.disabled = true;
+  }
 }
 
 function displayDashboard() {
@@ -373,14 +430,8 @@ function displayUserActivityMilestones() {
     }
     activityUser.innerHTML = `<h3>Today on ${dateInput}:</h3>
     <p>You walked ${milesWalked} miles. <br>Your step goal was ${stepGoalMessage}. <br>Your longest streak of beating your step goal was ${allDaysExceeded} days.
-    <br>Your all time stair record is ${allTimeRecord}. Keep it up!`;
-  } else {
-    activityUser.innerHTML = `<h3>Missing user data for ${dateInput}</h3>
-    <p>Please choose a different date</p>`;
-  }
-}
-
-
+    <br>Your all time stair record is ${allTimeRecord}. Keep it up!</p>`;
+   } 
 
 function displayActivityForWeek() {
   formatInputDate();
@@ -393,9 +444,9 @@ function displayActivityForWeek() {
   const flightsOfStairsWeek = user.userActivityData
     .getActivityDetailForWeek(dateInput, "flightsOfStairs")
     .reverse();
-  const averageMinutes = user.userActivityData.getActiveAverageForWeek(dateInput, "minutesActive" )
+  const averageMinutes = user.userActivityData.getActiveAverageForWeek(dateInput, "minutesActive")
   const averageFlights = user.userActivityData.getActiveAverageForWeek(dateInput, "flightsOfStairs")
-  const averageSteps = user.userActivityData.getActiveAverageForWeek(dateInput, "numSteps" )
+  const averageSteps = user.userActivityData.getActiveAverageForWeek(dateInput, "numSteps")
   activityChart.innerHTML = `
     <table class="activity-data">
     <tr>
@@ -487,4 +538,4 @@ function displayActivityComparison() {
     </tr>
     </table>`;
   }
- 
+
