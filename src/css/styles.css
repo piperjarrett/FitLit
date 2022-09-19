@@ -2,6 +2,11 @@ body,
 html {
   font-family: "Roboto Mono", monospace;
 }
+.errorDisplay {
+  display: flex;
+  justify-content: center;
+  margin-top: 25vw;
+}
 .fit-lit-light {
   background-color: rgb(255, 255, 255);
 }

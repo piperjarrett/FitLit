@@ -1,4 +1,4 @@
-const mainPage = document.querySelector(".fit-lit-light");
+const mainPage = document.querySelector(".fit-lit-light ");
 
 function fetchData(details) {
   return fetch(`http://localhost:3001/api/v1/${details}`)
@@ -6,7 +6,7 @@ function fetchData(details) {
     .catch((error) => {
       console.log(error);
       mainPage.innerHTML = "";
-      mainPage.innerHTML += `<h1>Sorry, server down. Please try again later!`;
+      mainPage.innerHTML += `<h1 class='errorDisplay'>Sorry, server down. Please try again later!`;
     });
 }
 const promiseAll = () => {
