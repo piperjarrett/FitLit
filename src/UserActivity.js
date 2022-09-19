@@ -27,7 +27,7 @@ class UserActivity {
     return userActivity.numSteps >= user.dailyStepGoal;
   }
 
-  getMinutesActiveForWeek(endDate) {
+  getActiveAverageForWeek(endDate, detail) {
     const endDateObj = new Date(endDate);
     const startDate = new Date(endDate);
     startDate.setDate(endDateObj.getDate() - 7);
@@ -36,7 +36,7 @@ class UserActivity {
       return entryDate <= endDateObj && entryDate > startDate;
     });
     const sum = weeklyActivityData.reduce((acc, entry) => {
-      acc += entry.minutesActive;
+      acc += entry[detail];
       return acc;
     }, 0);
     const averageMinutesActive = Math.round(sum / 7);

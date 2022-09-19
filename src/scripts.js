@@ -27,7 +27,6 @@ let allUsers;
 let userData;
 let hydrationData;
 let sleepData;
-let userActivity;
 let activityData;
 let dateInput;
 
@@ -370,9 +369,16 @@ function displayUserActivityToday() {
     dateInput,
     "minutesActive"
   );
+  const stepGoalCompare = user.userActivityData.compareStepGoalByDate(dateInput, user)
+  let stepGoalMessage = null
+  if(stepGoalCompare) {
+    stepGoalMessage = 'met'
+  } else {
+    stepGoalMessage = 'not met'
+  }
   if (numberOfSteps) {
-    activityCard.innerHTML += `<h3>On ${dateInput}:</h3>
-    <p>You walked ${milesWalked} miles, ${numberOfSteps} steps, and were active for ${minsActive} minutes.`;
+    activityCard.innerHTML += `<h3>Today on ${dateInput}:</h3>
+    <p>You walked ${milesWalked} miles, took ${numberOfSteps} steps, and were active for ${minsActive} minutes. Your step goal was ${stepGoalMessage}.`;
   } else {
     activityCard.innerHTML += `<h3>There is no user data for ${dateInput}</h3>
     <p>Please choose a different date</p>`;
@@ -397,7 +403,7 @@ function displayAllUserActivityToday() {
     "minutesActive"
   );
   if (allNumSteps) {
-    activityCard.innerHTML += `<p>Compare your day to all users today: ${allNumSteps} steps, 
+    activityCard.innerHTML += `<p>Average for all users today: ${allNumSteps} steps, 
   ${allMinutesActive} activity minutes, and ${allFlightsOfStairs} flights climbed.</p>`;
   } else {
     activityCard.innerHTML += `<h3>There is no community data for ${dateInput}</h3>
@@ -416,6 +422,9 @@ function displayActivityForWeek() {
   const flightsOfStairsWeek = user.userActivityData
     .getActivityDetailForWeek(dateInput, "flightsOfStairs")
     .reverse();
+  const averageMinutes = user.userActivityData.getActiveAverageForWeek(dateInput, "minutesActive" )
+  const averageFlights = user.userActivityData.getActiveAverageForWeek(dateInput, "flightsOfStairs")
+  const averageSteps = user.userActivityData.getActiveAverageForWeek(dateInput, "numSteps" )
   activityChart.innerHTML = `
     <table class="activity-data">
     <tr>
@@ -465,6 +474,12 @@ function displayActivityForWeek() {
       <td class="activity-data">${numStepsWeek[6].numSteps}</td>
       <td class="activity-data">${minutesActiveWeek[6].minutesActive}</td>
       <td class="activity-data">${flightsOfStairsWeek[6].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">Weekly Average</td>
+      <td class="activity-data">${averageSteps}</td>
+      <td class="activity-data">${averageMinutes}</td>
+      <td class="activity-data">${averageFlights}</td>
     </tr>
   </table>`;
 }
