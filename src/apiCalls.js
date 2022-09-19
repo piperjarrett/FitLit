@@ -30,13 +30,8 @@ const postData = (details, data) => {
     },
   })
     .then((response) => response.json())
-    .then((response) => fetchData(details))
-    .catch((err) => console.log(err))
-    .catch(
-      (err) =>
-        (mainPage.innerHTML = `<h1>Sorry, server down</h1>
-    <p>Please try again later!</p>`)
-    );
+    .then((response) => promiseAll())
+    .catch((err) => console.log(err));
 };
 
 export { promiseAll };
