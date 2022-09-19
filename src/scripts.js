@@ -374,7 +374,7 @@ function displayUserActivityToday() {
     dateInput,
     "flightsOfStairs"
   );
-  if (numberOfSteps && minsActive) {
+  if (numberOfSteps && minsActive && flights) {
     const stepGoalCompare = user.userActivityData.compareStepGoalByDate(dateInput, user)
     let stepGoalMessage = null
     if(stepGoalCompare) {
