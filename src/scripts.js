@@ -33,6 +33,7 @@ let activityData;
 let dateInput;
 
 // Query Selectors
+const mainPage = document.querySelector("main");
 const userDetails = document.querySelector(".user-card");
 const friendsList = document.querySelector(".friends-card");
 const stepDetails = document.querySelector(".step-card");
