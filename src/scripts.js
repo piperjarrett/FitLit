@@ -432,6 +432,7 @@ function displayUserActivityMilestones() {
     <p>You walked ${milesWalked} miles. <br>Your step goal was ${stepGoalMessage}. <br>Your longest streak of beating your step goal was ${allDaysExceeded} days.
     <br>Your all time stair record is ${allTimeRecord}. Keep it up!</p>`;
    } 
+  }
 
 function displayActivityForWeek() {
   formatInputDate();
