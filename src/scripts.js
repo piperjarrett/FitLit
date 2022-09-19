@@ -47,6 +47,7 @@ const activityAllUser = document.querySelector(".activity-all-user")
 const activityChart = document.querySelector(".activity-chart");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
+const compareActivityChart=document.querySelector(".compare-activity")
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
@@ -54,9 +55,9 @@ submitButton.addEventListener("click", () => {
   displaySleepForAWeek();
   displayHydrationForWeek();
   displaySteps();
-  displayUserActivityToday()
-  displayAllUserActivityToday();
+  //displayUserActivityToday()
   displayActivityForWeek();
+  displayActivityComparison();
 });
 
 function hide(element) {
@@ -168,9 +169,9 @@ function displayDashboard() {
   displaySleepForAWeek();
   displayHydrationForWeek();
   displaySteps();
-  displayUserActivityToday();
-  displayAllUserActivityToday();
+ // displayUserActivityToday();
   displayActivityForWeek();
+  displayActivityComparison();
 }
 
 function formatInputDate() {
@@ -362,19 +363,8 @@ function displayUserActivityToday() {
     dateInput,
     user
   );
-  const numberOfSteps = user.userActivityData.getActivityDetailByDate(
-    dateInput,
-    "numSteps"
-  );
-  const minsActive = user.userActivityData.getActivityDetailByDate(
-    dateInput,
-    "minutesActive"
-  );
-  const flights = user.userActivityData.getActivityDetailByDate(
-    dateInput,
-    "flightsOfStairs"
-  );
-  if (numberOfSteps && minsActive && flights) {
+  const 
+  if (milesWalked && minsActive && flights) {
     const stepGoalCompare = user.userActivityData.compareStepGoalByDate(dateInput, user)
     let stepGoalMessage = null
     if(stepGoalCompare) {
@@ -390,31 +380,7 @@ function displayUserActivityToday() {
   }
 }
 
-function displayAllUserActivityToday() {
-  formatInputDate();
-  const allNumSteps = userRepository.findAverageActivityDetail(
-    activityData,
-    dateInput,
-    "numSteps"
-  );
-  const allFlightsOfStairs = userRepository.findAverageActivityDetail(
-    activityData,
-    dateInput,
-    "flightsOfStairs"
-  );
-  const allMinutesActive = userRepository.findAverageActivityDetail(
-    activityData,
-    dateInput,
-    "minutesActive"
-  );
-  if (allNumSteps && allMinutesActive && allFlightsOfStairs) {
-    activityAllUser.innerHTML = `<p>Average for all users today: ${allNumSteps} steps, 
-  ${allMinutesActive} activity minutes, and ${allFlightsOfStairs} flights climbed.</p>`;
-  } else {
-    activityAllUser.innerHTML = `<h3>There is no community data for ${dateInput}</h3>
-  <p>Please choose a different date</p>`;
-  }
-}
+
 
 function displayActivityForWeek() {
   formatInputDate();
@@ -489,3 +455,37 @@ function displayActivityForWeek() {
     </tr>
   </table>`;
 }
+
+function displayActivityComparison() {
+  formatInputDate();
+  const allNumSteps = userRepository.findAverageActivityDetail(activityData, dateInput, "numSteps");
+  const allFlightsOfStairs = userRepository.findAverageActivityDetail(activityData,dateInput,"flightsOfStairs");
+  const allMinutesActive = userRepository.findAverageActivityDetail(activityData,dateInput,"minutesActive");
+  const numberOfSteps = user.userActivityData.getActivityDetailByDate(dateInput,"numSteps");
+  const minsActive = user.userActivityData.getActivityDetailByDate(dateInput,"minutesActive");
+  const flights = user.userActivityData.getActivityDetailByDate(dateInput,"flightsOfStairs");
+    compareActivityChart.innerHTML = `
+    <table class="compare-activity-data">
+    <tr>
+      <td class ="activity-data">Metric</td>
+      <td class ="activity-data">You</td>
+      <td class ="activity-data">All Users</td>
+    </tr>
+    <tr>
+      <td class="activity-data">Steps</td>
+      <td class="activity-data">${numberOfSteps}</td>
+      <td class="activity-data">${allNumSteps}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">Minutes</td>
+      <td class="activity-data">${minsActive}</td>
+      <td class="activity-data">${allMinutesActive}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">Flights</td>
+      <td class="activity-data">${flights}</td>
+      <td class="activity-data">${allFlightsOfStairs}</td>
+    </tr>
+    </table>`;
+  }
+ 
