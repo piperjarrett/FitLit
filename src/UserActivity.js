@@ -16,20 +16,20 @@ class UserActivity {
   getActivityDetailByDate(activityDate, detail) {
     const userActivity = this.data.find((data) => data.date === activityDate);
     if (userActivity) {
-      return userActivity[detail]
+      return userActivity[detail];
     } else {
-      return 0
+      return 0;
     }
   }
 
   compareStepGoalByDate(activityDate, user) {
     const userActivity = this.data.find((data) => data.date === activityDate);
     if (userActivity) {
-    return userActivity.numSteps >= user.dailyStepGoal;
-  } else {
-    return false
+      return userActivity.numSteps >= user.dailyStepGoal;
+    } else {
+      return false;
+    }
   }
-}
 
   getActiveAverageForWeek(endDate, detail) {
     const endDateObj = new Date(endDate);
@@ -60,7 +60,10 @@ class UserActivity {
       ).padStart(2, "0")}/${String(dayDate.getDate()).padStart(2, "0")}`;
       let activityEntry = this.data.find((entry) => entry.date === entryDate);
       if (activityEntry) {
-        weekActivity[index] = { date: entryDate, [detail]: activityEntry[detail] };
+        weekActivity[index] = {
+          date: entryDate,
+          [detail]: activityEntry[detail],
+        };
       } else {
         weekActivity[index] = { date: entryDate, [detail]: 0 };
       }
@@ -70,7 +73,7 @@ class UserActivity {
   }
 
   allDaysExceedStepGoal(user) {
-    return this.data.filter((data) => data.numSteps > user.dailyStepGoal)
+    return this.data.filter((data) => data.numSteps > user.dailyStepGoal);
   }
 
   allTimeStairClimbingRecord() {
