@@ -37,8 +37,12 @@ class UserRepository {
       total += user;
       return total;
     }, 0);
-    const averageActivityDetail = totalActivityDetail / activityData.length;
+    if(totalActivityDetail > 0) {
+    const averageActivityDetail = totalActivityDetail / allUserActivityDetail.length;
     return Math.round(averageActivityDetail);
+    } else {
+      return 0
+    }
   }
 }
 export default UserRepository;

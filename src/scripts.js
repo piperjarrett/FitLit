@@ -18,7 +18,7 @@ import User from "./User";
 import UserRepository from "./UserRepository";
 import HydrationSeries from "./HydrationSeries";
 import SleepSeries from "./SleepSeries";
-import Chart, { BarController } from "chart.js/auto";
+import Chart from "chart.js/auto";
 import UserActivity from "./UserActivity";
 
 //Global Variables
@@ -28,9 +28,9 @@ let allUsers;
 let userData;
 let hydrationData;
 let sleepData;
-let userActivity;
 let activityData;
 let dateInput;
+let myChart = null;
 
 // Query Selectors
 const mainPage = document.querySelector("main");
@@ -44,9 +44,11 @@ const inputValue = document.querySelector(".calender-one");
 const submitButton = document.querySelector(".submit");
 const hydraChart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
-const activityCard = document.querySelector(".activity-info");
+const activityUser = document.querySelector(".activity-user-info");
+const activityChart = document.querySelector(".activity-chart");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
+const compareActivityChart = document.querySelector(".compare-activity")
 const calenderInput = document.querySelector(".calender");
 const dataInputForm = document.querySelector(".adding-data-section");
 const formSubmitButton = document.querySelector(".data-submit");
@@ -56,15 +58,17 @@ const numOfOunces = document.querySelector("#numOfOunces");
 const minsActive = document.querySelector("#minutesActive");
 const numOfSteps = document.querySelector("#numOfSteps");
 const flightsOfStairs = document.querySelector("#flightsOfStairs");
-let result = categoriesValue.options[categoriesValue.selectedIndex].text;
+const result = categoriesValue.options[categoriesValue.selectedIndex].text;
+
 // Event Listeners
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
   displaySleepForAWeek();
   displayHydrationForWeek();
-  displayMilesWalked();
-  displayNumberOfSteps();
-  displayMinutesActive();
+  displaySteps();
+  displayUserActivityMilestones();
+  displayActivityForWeek();
+  displayActivityComparison();
 });
 formSubmitButton.addEventListener("click", getDataToPost);
 dataInputForm.addEventListener("input", enableButton);
@@ -74,7 +78,7 @@ categoriesValue.addEventListener("change", () => {
   const activityInputs = document.querySelector(".activity-data-inputs");
   const dateSelector = document.querySelector(".date-input");
   const selectionLabel = document.querySelector(".selection-label");
-  result = categoriesValue.options[categoriesValue.selectedIndex].text;
+
   if (result === "Sleep Data") {
     selectionLabel.innerText = "Please Enter Your Sleep Data";
     show(sleepInputs);
@@ -221,9 +225,9 @@ function displayDashboard() {
   displaySleepForAWeek();
   displayHydrationForWeek();
   displaySteps();
-  displayMilesWalked();
-  displayNumberOfSteps();
-  displayMinutesActive();
+  displayUserActivityMilestones();
+  displayActivityForWeek();
+  displayActivityComparison();
 }
 
 function formatInputDate() {
@@ -231,8 +235,7 @@ function formatInputDate() {
 }
 
 function displayUserDetails() {
-  userDetails.innerHTML = "";
-  userDetails.innerHTML += `
+  userDetails.innerHTML = `
     <h3 class="user-name">Hi, ${user.getFirstName()}!</h3>
     <p class="email">Email: ${user.email} </p>
     <p class="address">Address: ${user.address} </p>
@@ -241,14 +244,13 @@ function displayUserDetails() {
 }
 
 function displayFriends() {
-  friendsList.innerHTML = "";
   const foundFriends = user.friends.map((friend) =>
     userRepository.findUserData(friend)
   );
   const firstNames = foundFriends.map((friend) => friend.getFirstName());
   firstNames.forEach(
     (friend) =>
-      (friendsList.innerHTML += `<section class="friend">
+      (friendsList.innerHTML = `<section class="friend">
     <img class="log-img"
     src="./images/avatar-male.png"
     alt="male avatar"
@@ -261,10 +263,11 @@ function displayFriends() {
 }
 
 function displayAverageSleep() {
-  avgSleepHours.innerHTML += `<p>${user.userSleepData.getAvgSleepDataPerDay(
+  avgSleepHours.innerHTML = `<p>Average Number of Hours Slept:<br>
+  ${user.userSleepData.getAvgSleepDataPerDay(
     "hoursSlept"
   )} hours </p>`;
-  avgQualitySleep.innerHTML += `<p>${user.userSleepData.getAvgSleepDataPerDay(
+  avgQualitySleep.innerHTML = `<p>Average Sleep Quality:<br>${user.userSleepData.getAvgSleepDataPerDay(
     "sleepQuality"
   )}</p>`;
 }
@@ -363,10 +366,7 @@ function displayHydrationForWeek() {
     <td class="hydra-data">${hydrationWeek[6].numOunces}</td>
   </tr>
 </table>`;
-  } else {
-    hydraChart.innerHTML = `<p> There Is Not Enough Data To Display For This Week. Please Select
-    A Different Week To See Your Weekly Report <p>`;
-  }
+  } 
 }
 
 function displaySteps() {
@@ -374,7 +374,10 @@ function displaySteps() {
   const averageSteps = userRepository.findAverageStepGoal();
   const comparison = Math.round((user.dailyStepGoal / averageSteps) * 100);
   Chart.defaults.color = "white";
-  let myChart = new Chart(stepChart, {
+  if(myChart !== null) {
+   myChart.destroy()
+  }   
+  myChart = new Chart(stepChart, {
     type: "bar",
     data: {
       labels: ["Your Goal", "Average User Goal"],
@@ -409,109 +412,131 @@ function displaySteps() {
   stepDetails.innerHTML += `<p class=chart-text>Your daily step goal is ${comparison}% compared to all average users.</p>`;
 }
 
-function displayMilesWalked() {
+function displayUserActivityMilestones() {
   formatInputDate();
   const milesWalked = user.userActivityData.getMilesBasedOnSteps(
     dateInput,
     user
   );
-  if (milesWalked === 0.0) {
-    activityCard.innerHTML = "<p>Please add data for given date</p>";
-  } else {
-    activityCard.innerHTML = `<h3>On ${dateInput} you:</h3>
-    <p>  walked ${milesWalked} miles, `;
+  const allDaysExceeded = user.userActivityData.allDaysExceedStepGoal(user)
+  const allTimeRecord = user.userActivityData.allTimeStairClimbingRecord()
+  if (milesWalked) {
+    const stepGoalCompare = user.userActivityData.compareStepGoalByDate(dateInput, user)
+    let stepGoalMessage = null
+    if(stepGoalCompare) {
+      stepGoalMessage = 'met'
+    } else {
+      stepGoalMessage = 'not met'
+    }
+    activityUser.innerHTML = `<h3>Today on ${dateInput}:</h3>
+    <p>You walked ${milesWalked} miles. <br>Your step goal was ${stepGoalMessage}. <br>Your longest streak of beating your step goal was ${allDaysExceeded} days.
+    <br>Your all time stair record is ${allTimeRecord}. Keep it up!</p>`;
+   } 
   }
-}
 
-function displayNumberOfSteps() {
+function displayActivityForWeek() {
   formatInputDate();
-  const numberOfSteps = user.userActivityData.getActivityDetailByDate(
-    dateInput,
-    "numSteps"
-  );
-  if (numberOfSteps === 0) {
-    activityCard.innerHTML += "";
-  } else {
-    activityCard.innerHTML += `</p>${numberOfSteps} steps,</p>`;
-  }
-}
-
-function displayMinutesActive() {
-  formatInputDate();
-  const minsActive = user.userActivityData.getActivityDetailByDate(
-    dateInput,
-    "minutesActive"
-  );
-  if (minsActive === 0) {
-    activityCard.innerHTML += "";
-  } else {
-    activityCard.innerHTML += `</p>and were active for ${minsActive} minutes</p>`;
-  }
-}
-//still editing this function
-function displayActivityDetailComparison() {
-  formatInputDate();
-  const allNumSteps = userRepository.findAverageActivityDetail(
-    activityData,
-    dateInput,
-    "numSteps"
-  );
-  const allFlightsOfStairs = userRepository.findAverageActivityDetail(
-    activityData,
-    dateInput,
-    "flightsOfStairs"
-  );
-  const allMinutesActive = userRepository.findAverageActivityDetail(
-    activityData,
-    dateInput,
-    "minutesActive"
-  );
-  const minutesActive = userActivity.getActivityDetailByDate(
-    dateInput,
-    "minutesActive"
-  );
-  const numSteps = userActivity.getActivityDetailByDate(dateInput, "numSteps");
-  const flightsOfStairs = userActivity.getActivityDetailByDate(
-    dateInput,
-    "flightsOfStairs"
-  );
-  const hydrationWeek = user.userHydrationData
-    .getWeeklyFluids(dateInput)
+  const minutesActiveWeek = user.userActivityData
+    .getActivityDetailForWeek(dateInput, "minutesActive")
     .reverse();
-  if (hydrationWeek.length >= 6) {
-    chart.innerHTML = `
+  const numStepsWeek = user.userActivityData
+    .getActivityDetailForWeek(dateInput, "numSteps")
+    .reverse();
+  const flightsOfStairsWeek = user.userActivityData
+    .getActivityDetailForWeek(dateInput, "flightsOfStairs")
+    .reverse();
+  const averageMinutes = user.userActivityData.getActiveAverageForWeek(dateInput, "minutesActive")
+  const averageFlights = user.userActivityData.getActiveAverageForWeek(dateInput, "flightsOfStairs")
+  const averageSteps = user.userActivityData.getActiveAverageForWeek(dateInput, "numSteps")
+  activityChart.innerHTML = `
     <table class="activity-data">
     <tr>
+      <td class ="activity-data">Date</td>
+      <td class ="activity-data">#Steps</td>
+      <td class ="activity-data">Minutes<br> Active</td>
+      <td class ="activity-data">Flights<br> Climbed</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[0].date}</td>
+      <td class="activity-data">${numStepsWeek[0].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[0].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[0].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[1].date}</td>
+      <td class="activity-data">${numStepsWeek[1].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[1].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[1].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[2].date}</td>
+      <td class="activity-data">${numStepsWeek[2].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[2].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[2].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[3].date}</td>
+      <td class="activity-data">${numStepsWeek[3].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[3].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[3].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[4].date}</td>
+      <td class="activity-data">${numStepsWeek[4].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[4].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[4].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[5].date}</td>
+      <td class="activity-data">${numStepsWeek[5].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[5].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[5].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">${minutesActiveWeek[6].date}</td>
+      <td class="activity-data">${numStepsWeek[6].numSteps}</td>
+      <td class="activity-data">${minutesActiveWeek[6].minutesActive}</td>
+      <td class="activity-data">${flightsOfStairsWeek[6].flightsOfStairs}</td>
+    </tr>
+    <tr>
+      <td class="activity-data">Weekly Average</td>
+      <td class="activity-data">${averageSteps}</td>
+      <td class="activity-data">${averageMinutes}</td>
+      <td class="activity-data">${averageFlights}</td>
+    </tr>
+  </table>`;
+}
+
+function displayActivityComparison() {
+  formatInputDate();
+  const allNumSteps = userRepository.findAverageActivityDetail(activityData, dateInput, "numSteps");
+  const allFlightsOfStairs = userRepository.findAverageActivityDetail(activityData,dateInput,"flightsOfStairs");
+  const allMinutesActive = userRepository.findAverageActivityDetail(activityData,dateInput,"minutesActive");
+  const numberOfSteps = user.userActivityData.getActivityDetailByDate(dateInput,"numSteps");
+  const minsActive = user.userActivityData.getActivityDetailByDate(dateInput,"minutesActive");
+  const flights = user.userActivityData.getActivityDetailByDate(dateInput,"flightsOfStairs");
+    compareActivityChart.innerHTML = `
+    <table class="compare-activity-data">
+    <tr>
+      <td class ="activity-data">Metric</td>
       <td class ="activity-data">You</td>
       <td class ="activity-data">All Users</td>
     </tr>
     <tr>
-      <td class="activity-data">${hydrationWeek[1].date}</td>
-      <td class="activity-data">${hydrationWeek[1].numOunces}</td>
+      <td class="activity-data">Steps</td>
+      <td class="activity-data">${numberOfSteps}</td>
+      <td class="activity-data">${allNumSteps}</td>
     </tr>
     <tr>
-      <td class="activity-data">${hydrationWeek[2].date}</td>
-      <td class="activity-data">${hydrationWeek[2].numOunces}</td>
+      <td class="activity-data">Minutes</td>
+      <td class="activity-data">${minsActive}</td>
+      <td class="activity-data">${allMinutesActive}</td>
     </tr>
     <tr>
-      <td class="activity-data">${hydrationWeek[3].date}</td>
-      <td class="activity-data">${hydrationWeek[3].numOunces}</td>
+      <td class="activity-data">Flights</td>
+      <td class="activity-data">${flights}</td>
+      <td class="activity-data">${allFlightsOfStairs}</td>
     </tr>
-      <tr>
-      <td class="activity-data">${hydrationWeek[4].date}</td>
-      <td class="activity-data">${hydrationWeek[4].numOunces}</td>
-    </tr>
-    <tr>
-      <td class="activity-data">${hydrationWeek[5].date}</td>
-      <td class="activity-data">${hydrationWeek[5].numOunces}</td>
-    </tr>
-    <tr>
-      <td class="activity-data">${hydrationWeek[6].date}</td>
-      <td class="activity-data">${hydrationWeek[6].numOunces}</td>
-    </tr>
-  </table>`;
-  } else {
-    chart.innerHTML = `<p> There Is Not Enough Data To Display For This Week. Please Select
-      A Different Week To See Your Weekly Report <p>`;
+    </table>`;
   }
-}
+

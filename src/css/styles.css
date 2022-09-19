@@ -77,6 +77,7 @@ main {
 .activity-container,
 .hydration-container,
 .sleep-container,
+.todays-vitals,
 .user-container {
   display: flex;
   flex-direction: column;
@@ -170,9 +171,9 @@ main {
   width: 100%;
 }
 
-.friend img {
-  width: 20px;
-  height: 20px;
+.friend img{
+  width: 25px;
+  height: 25px;
 }
 
 .sleep-container {
@@ -189,7 +190,8 @@ main {
 }
 
 .sleep-data,
-.hydra-data {
+.hydra-data,
+.activity-data {
   border: 1px solid #2cb7ff;
 }
 .sleep-for-week {
@@ -200,15 +202,18 @@ main {
   border: 1px solid #6947ff;
 }
 
+.activity-data {
+  border: 1px solid white;
+}
+
 .hydration-container {
   color: black;
-  flex-direction: column;
   width: auto;
-  height: auto;
   align-content: center;
   text-align: center;
   background-color: #2cb7ff;
-  margin-left: 2vw;
+  margin-left:2vw;
+  margin-bottom: auto;
   padding-top: 10px;
   padding-right: 1vw;
   padding-bottom: 1vw;
@@ -232,14 +237,26 @@ main {
   padding-top: 10px;
   margin-top: 20px;
   margin-bottom: 25px;
+  padding-right: 1vw;
+  padding-bottom: 1vw;
+  padding-left: 1vw;
 }
 
-.steps-container {
-  margin-right: 1vw;
+.todays-vitals {
+  color: rgb(0, 0, 0);
+  width: auto;
+  align-items: center;
+  text-align: center;
+  background-color: #cc66ff;
+  padding-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  padding-right: 1vw;
+  padding-bottom: 1vw;
+  padding-left: 1vw;
 }
-.placeholder-container {
+.activity-container {
   flex-direction: column;
-  width: 20vw;
   margin-left: 1.5vw;
 }
 

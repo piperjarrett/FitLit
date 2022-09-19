@@ -72,9 +72,74 @@ describe("UserActivity", () => {
     expect(resultTwo).to.equal(true);
   });
 
-  it("should have a method to calculate average minutes active for a given week", () => {
-    const result = userActivity.getMinutesActiveForWeek("2019/06/21", user);
-    expect(result).to.equal(171);
+  it("should have a method to get a users daily number of steps for any given week", () => {
+    const weeklySteps = userActivity.getActivityDetailForWeek("2019/06/21", "numSteps")
+    expect(weeklySteps).to.deep.equal([
+      { date: "2019/06/15", numSteps: 3577 },
+      { date: "2019/06/16", numSteps: 6637 },
+      { date: "2019/06/17", numSteps: 14329 },
+      { date: "2019/06/18", numSteps: 4419 },
+      { date: "2019/06/19", numSteps: 8429 },
+      { date: "2019/06/20", numSteps: 14478 },
+      { date: "2019/06/21", numSteps: 6760 },
+    ])
+  });
+
+  it("should have a method to get a users daily activity minutes for any given week", () => {
+    const weeklyMinutes = userActivity.getActivityDetailForWeek("2019/06/21", "minutesActive")
+    expect(weeklyMinutes).to.deep.equal([
+      { date: "2019/06/15", minutesActive: 140 },
+      { date: "2019/06/16", minutesActive: 175 },
+      { date: "2019/06/17", minutesActive: 168 },
+      { date: "2019/06/18", minutesActive: 165 },
+      { date: "2019/06/19", minutesActive: 275 },
+      { date: "2019/06/20", minutesActive: 140 },
+      { date: "2019/06/21", minutesActive: 135 },
+    ])
+  });
+
+  it("should have a method to get a users daily activity minutes for any given week", () => {
+    const weeklyFlights = userActivity.getActivityDetailForWeek("2019/06/21", "flightsOfStairs")
+    expect(weeklyFlights).to.deep.equal([
+      { date: "2019/06/15", flightsOfStairs: 16 },
+      { date: "2019/06/16", flightsOfStairs: 36 },
+      { date: "2019/06/17", flightsOfStairs: 18 },
+      { date: "2019/06/18", flightsOfStairs: 33 },
+      { date: "2019/06/19", flightsOfStairs: 2 },
+      { date: "2019/06/20", flightsOfStairs: 12 },
+      { date: "2019/06/21", flightsOfStairs: 6 },
+    ])
+  });
+
+  it("should return remaining number of steps data per day over a week and 0 for dates with missing activity data", () => {
+    let stepsInAWeek = userActivity.getActivityDetailForWeek(
+      "2019/06/23",
+      "numSteps"
+    );
+    expect(stepsInAWeek).to.deep.equal([
+      { date: "2019/06/17", numSteps: 14329 },
+      { date: "2019/06/18", numSteps: 4419 },
+      { date: "2019/06/19", numSteps: 8429 },
+      { date: "2019/06/20", numSteps: 14478 },
+      { date: "2019/06/21", numSteps: 6760 },
+      { date: "2019/06/22", numSteps: 0 },
+      { date: "2019/06/23", numSteps: 0 },
+    ])
+  });
+
+  it("should have a method to calculate a users average activity minutes for a given week", () => {
+    const minutes = userActivity.getActiveAverageForWeek("2019/06/21", "minutesActive");
+    expect(minutes).to.equal(171);
+  }); 
+
+  it("should have a method to calculate a users average number of steps for a given week", () => {
+    const steps = userActivity.getActiveAverageForWeek("2019/06/21", "numSteps");
+    expect(steps).to.equal(8376);
+  });
+
+  it("should have a method to calculate a users average flights of stairs climbed for a given week", () => {
+    const flights = userActivity.getActiveAverageForWeek("2019/06/21", "flightsOfStairs");
+    expect(flights).to.equal(18);
   });
 
   it("should have a method that finds a users all-time stair climbing record", () => {
@@ -82,23 +147,9 @@ describe("UserActivity", () => {
     expect(resultTwo).to.equal(36);
   });
 
-  it("should have a method that finds all days where the user number of steps exceeded their step goal", () => {
+  it("should have a method that find the length of the all days where the user number of steps exceeded their step goal", () => {
     const days = userActivity.allDaysExceedStepGoal(user);
-    expect(days).to.deep.equal([
-      {
-        userID: 1,
-        date: "2019/06/17",
-        numSteps: 14329,
-        minutesActive: 168,
-        flightsOfStairs: 18,
-      },
-      {
-        userID: 1,
-        date: "2019/06/20",
-        numSteps: 14478,
-        minutesActive: 140,
-        flightsOfStairs: 12,
-      },
-    ]);
+    expect(days).to.equal(2);
   });
+
 });

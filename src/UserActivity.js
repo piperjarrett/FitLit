@@ -16,18 +16,22 @@ class UserActivity {
   getActivityDetailByDate(activityDate, detail) {
     const userActivity = this.data.find((data) => data.date === activityDate);
     if (userActivity) {
-      return userActivity[detail]
+      return userActivity[detail];
     } else {
-      return 0
+      return 0;
     }
   }
 
   compareStepGoalByDate(activityDate, user) {
     const userActivity = this.data.find((data) => data.date === activityDate);
-    return userActivity.numSteps >= user.dailyStepGoal;
+    if (userActivity) {
+      return userActivity.numSteps >= user.dailyStepGoal;
+    } else {
+      return false;
+    }
   }
 
-  getMinutesActiveForWeek(endDate) {
+  getActiveAverageForWeek(endDate, detail) {
     const endDateObj = new Date(endDate);
     const startDate = new Date(endDate);
     startDate.setDate(endDateObj.getDate() - 7);
@@ -36,15 +40,40 @@ class UserActivity {
       return entryDate <= endDateObj && entryDate > startDate;
     });
     const sum = weeklyActivityData.reduce((acc, entry) => {
-      acc += entry.minutesActive;
+      acc += entry[detail];
       return acc;
     }, 0);
     const averageMinutesActive = Math.round(sum / 7);
     return averageMinutesActive;
   }
 
+  getActivityDetailForWeek(endDate, detail) {
+    const endDateObj = new Date(endDate);
+    const dayDate = new Date(endDate);
+    dayDate.setDate(endDateObj.getDate() - 7);
+    let weekActivity = [{}, {}, {}, {}, {}, {}, {}];
+    let index = 0;
+    weekActivity.forEach(() => {
+      dayDate.setDate(dayDate.getDate() + 1);
+      let entryDate = `${dayDate.getFullYear()}/${String(
+        dayDate.getMonth() + 1
+      ).padStart(2, "0")}/${String(dayDate.getDate()).padStart(2, "0")}`;
+      let activityEntry = this.data.find((entry) => entry.date === entryDate);
+      if (activityEntry) {
+        weekActivity[index] = {
+          date: entryDate,
+          [detail]: activityEntry[detail],
+        };
+      } else {
+        weekActivity[index] = { date: entryDate, [detail]: 0 };
+      }
+      index++;
+    });
+    return weekActivity;
+  }
+
   allDaysExceedStepGoal(user) {
-    return this.data.filter((data) => data.numSteps > user.dailyStepGoal)
+    return this.data.filter((data) => data.numSteps > user.dailyStepGoal).length;
   }
 
   allTimeStairClimbingRecord() {
