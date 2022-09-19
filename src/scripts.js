@@ -125,7 +125,8 @@ changeBackground.addEventListener("click", () => {
 
 promiseAll().then((responses) => {
   assignData(responses);
-  createClasses();
+  createUser();
+  createClasses(user);
   displayDashboard();
 });
 function assignData(responses) {
@@ -135,8 +136,11 @@ function assignData(responses) {
   activityData = responses[3].activityData;
 }
 
-function createClasses() {
+function createUser() {
   user = new User(userData.userData[getRandomIndex(userData.userData)]);
+}
+function createClasses() {
+  console.log(user);
   user.userSleepData = new SleepSeries(
     sleepData.filter((entry) => entry.userID === user.id)
   );
@@ -214,7 +218,7 @@ function getDataToPost(event) {
   }
   console.log(detail);
   console.log(data);
-  postData(detail, data).then((response) => {
+  postData(detail, data).then((responses) => {
     assignData(responses);
     createClasses();
     displayDashboard();
@@ -288,12 +292,14 @@ function displayAverageSleep() {
 
 function displaySleepForAWeek() {
   formatInputDate();
+  console.log(dateInput);
   const sleepInAWeek = user.userSleepData
     .getSleepPerDayForWeek(dateInput, "hoursSlept")
     .reverse();
   const sleepQualityInAWeek = user.userSleepData
     .getSleepPerDayForWeek(dateInput, "sleepQuality")
     .reverse();
+  sleepForWeek.innerHTML = "";
   sleepForWeek.innerHTML = `<table class="sleep-data">
   <tr>
     <td class="sleep-data">Date</td>

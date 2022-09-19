@@ -22,7 +22,7 @@ const promiseAll = () => {
 };
 
 const postData = (details, data) => {
-  fetch(`http://localhost:3001/api/v1/${details}`, {
+  return fetch(`http://localhost:3001/api/v1/${details}`, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -31,7 +31,13 @@ const postData = (details, data) => {
   })
     .then((response) => response.json())
     .then((response) => promiseAll())
-    .catch((err) => console.log(err));
+
+    .catch((err) => console.log(err))
+    .catch(
+      (err) =>
+        (mainPage.innerHTML = `<h1>Sorry, server down</h1>
+    <p>Please try again later!</p>`)
+    );
 };
 
 export { promiseAll };
