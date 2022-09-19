@@ -206,10 +206,11 @@ function displayFriends() {
 }
 
 function displayAverageSleep() {
-  avgSleepHours.innerHTML = `<p>${user.userSleepData.getAvgSleepDataPerDay(
+  avgSleepHours.innerHTML = `<p>Average Number of Hours Slept:<br>
+  ${user.userSleepData.getAvgSleepDataPerDay(
     "hoursSlept"
   )} hours </p>`;
-  avgQualitySleep.innerHTML = `<p>${user.userSleepData.getAvgSleepDataPerDay(
+  avgQualitySleep.innerHTML = `<p>Average Sleep Quality:<br>${user.userSleepData.getAvgSleepDataPerDay(
     "sleepQuality"
   )}</p>`;
 }
