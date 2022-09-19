@@ -178,8 +178,7 @@ function formatInputDate() {
 }
 
 function displayUserDetails() {
-  userDetails.innerHTML = "";
-  userDetails.innerHTML += `
+  userDetails.innerHTML = `
     <h3 class="user-name">Hi, ${user.getFirstName()}!</h3>
     <p class="email">Email: ${user.email} </p>
     <p class="address">Address: ${user.address} </p>
@@ -188,14 +187,13 @@ function displayUserDetails() {
 }
 
 function displayFriends() {
-  friendsList.innerHTML = "";
   const foundFriends = user.friends.map((friend) =>
     userRepository.findUserData(friend)
   );
   const firstNames = foundFriends.map((friend) => friend.getFirstName());
   firstNames.forEach(
     (friend) =>
-      (friendsList.innerHTML += `<section class="friend">
+      (friendsList.innerHTML = `<section class="friend">
     <img class="log-img"
     src="./images/avatar-male.png"
     alt="male avatar"
@@ -208,10 +206,10 @@ function displayFriends() {
 }
 
 function displayAverageSleep() {
-  avgSleepHours.innerHTML += `<p>${user.userSleepData.getAvgSleepDataPerDay(
+  avgSleepHours.innerHTML = `<p>${user.userSleepData.getAvgSleepDataPerDay(
     "hoursSlept"
   )} hours </p>`;
-  avgQualitySleep.innerHTML += `<p>${user.userSleepData.getAvgSleepDataPerDay(
+  avgQualitySleep.innerHTML = `<p>${user.userSleepData.getAvgSleepDataPerDay(
     "sleepQuality"
   )}</p>`;
 }
@@ -385,7 +383,6 @@ function displayUserActivityMilestones() {
 
 function displayActivityForWeek() {
   formatInputDate();
-  activityChart.innerHTML = ""
   const minutesActiveWeek = user.userActivityData
     .getActivityDetailForWeek(dateInput, "minutesActive")
     .reverse();
@@ -398,7 +395,7 @@ function displayActivityForWeek() {
   const averageMinutes = user.userActivityData.getActiveAverageForWeek(dateInput, "minutesActive" )
   const averageFlights = user.userActivityData.getActiveAverageForWeek(dateInput, "flightsOfStairs")
   const averageSteps = user.userActivityData.getActiveAverageForWeek(dateInput, "numSteps" )
-  activityChart.innerHTML += `
+  activityChart.innerHTML = `
     <table class="activity-data">
     <tr>
       <td class ="activity-data">Date</td>
