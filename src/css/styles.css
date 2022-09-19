@@ -175,7 +175,8 @@ main {
 }
 
 .sleep-data,
-.hydra-data {
+.hydra-data,
+.activity-data {
   border: 1px solid #2cb7ff;
 }
 .sleep-for-week {
@@ -184,6 +185,10 @@ main {
 
 .hydra-data {
   border: 1px solid #6947ff;
+}
+
+.activity-data {
+  border: 1px solid white;
 }
 
 .hydration-container {

@@ -44,16 +44,16 @@ describe("User Repository", () => {
 
   it("should have a method to calculate average minutes active for all users on a given date", () => {
     let averageMinutesActive = userRepo.findAverageActivityDetail(activityTestData, "2019/06/15", "minutesActive");
-    expect(averageMinutesActive).to.equal(53);
+    expect(averageMinutesActive).to.equal(138);
   });
 
   it("should have a method to calculate average number of steps for all users on a given date", () => {
     let averageStepNumber = userRepo.findAverageActivityDetail(activityTestData,"2019/06/15","numSteps");
-    expect(averageStepNumber).to.equal(2781);
+    expect(averageStepNumber).to.equal(7231);
   });
 
   it("should have a method to calculate average number of stairs climbed for all users on a given date", () => {
     let averageFlightNumber = userRepo.findAverageActivityDetail(activityTestData,"2019/06/15","flightsOfStairs");
-    expect(averageFlightNumber).to.equal(9);
+    expect(averageFlightNumber).to.equal(23);
   });
 });

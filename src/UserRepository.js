@@ -33,7 +33,6 @@ class UserRepository {
   findAverageActivityDetail(activityData, date, detail) {
     const allUserActivityByDate = activityData.filter(data => data.date === date)
     const allUserActivityDetail = allUserActivityByDate.map((user) => user[detail]);
-    console.log('alluseractivitydata', allUserActivityDetail)
     const totalActivityDetail = allUserActivityDetail.reduce((total, user) => {
       total += user;
       return total;
