@@ -24,8 +24,12 @@ class UserActivity {
 
   compareStepGoalByDate(activityDate, user) {
     const userActivity = this.data.find((data) => data.date === activityDate);
+    if (userActivity) {
     return userActivity.numSteps >= user.dailyStepGoal;
+  } else {
+    return false
   }
+}
 
   getActiveAverageForWeek(endDate, detail) {
     const endDateObj = new Date(endDate);

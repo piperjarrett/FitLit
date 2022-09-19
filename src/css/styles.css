@@ -193,13 +193,12 @@ main {
 
 .hydration-container {
   color: black;
-  flex-direction: column;
   width: auto;
-  height: auto;
   align-content: center;
   text-align: center;
   background-color: #2cb7ff;
   margin-left:2vw;
+  margin-bottom: auto;
   padding-top: 10px;
   padding-right: 1vw;
   padding-bottom: 1vw;
@@ -223,12 +222,14 @@ main {
   padding-top: 10px;
   margin-top: 20px;
   margin-bottom: 25px;
+  padding-right: 1vw;
+  padding-bottom: 1vw;
+  padding-left: 1vw;
 }
 
 
 .activity-container {
   flex-direction: column;
-  width: 20vw;
   margin-left: 1.5vw;
 }
 

@@ -127,7 +127,7 @@ describe("UserActivity", () => {
     ])
   });
 
-  it("should have a method to calculate a users average activity minutes (also number of steps, flights of stairs) for a given week", () => {
+  it("should have a method to calculate a users average activity minutes for a given week", () => {
     const minutes = userActivity.getActiveAverageForWeek("2019/06/21", "minutesActive");
     expect(minutes).to.equal(171);
   }); 
