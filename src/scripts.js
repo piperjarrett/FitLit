@@ -33,6 +33,7 @@ let activityData;
 let dateInput;
 
 // Query Selectors
+const mainPage = document.querySelector("main");
 const userDetails = document.querySelector(".user-card");
 const friendsList = document.querySelector(".friends-card");
 const stepDetails = document.querySelector(".step-card");
@@ -55,17 +56,7 @@ const numOfOunces = document.querySelector("#numOfOunces");
 const minsActive = document.querySelector("#minutesActive");
 const numOfSteps = document.querySelector("#numOfSteps");
 const flightsOfStairs = document.querySelector("#flightsOfStairs");
-const sleepDataError = document.querySelector(".error-message-sleepData");
-const sleepQualityError = document.querySelector(".error-message-sleepQuality");
-const hydrationError = document.querySelector(".error-message-hydration");
-const minutesActiveError = document.querySelector(
-  ".error-message-minutesActive"
-);
-const numOfStepsError = document.querySelector(".error-message-numOfSteps");
-const flightsOfStairsError = document.querySelector(
-  ".error-message-flightsOfStairs"
-);
-
+let result = categoriesValue.options[categoriesValue.selectedIndex].text;
 // Event Listeners
 window.addEventListener("load", promiseAll);
 submitButton.addEventListener("click", () => {
@@ -77,58 +68,56 @@ submitButton.addEventListener("click", () => {
 });
 formSubmitButton.addEventListener("click", getDataToPost);
 dataInputForm.addEventListener("input", enableButton);
-categoriesValue.addEventListener('change', ()=> {
-  const sleepInputs = document.querySelector('.sleep-data-inputs')
-  const hydrationInputs = document.querySelector('.hydration-data-inputs')
-  const activityInputs  = document.querySelector('.activity-data-inputs')
-  const dateSelector = document.querySelector('.date-input')
-  const selectionLabel = document.querySelector('.selection-label')
- let result = categoriesValue.options[categoriesValue.selectedIndex].text;
-   if(result === 'Sleep Data'){
-    selectionLabel.innerText = 'Please Enter Your Sleep Data'
-      show(sleepInputs)
-      hide(activityInputs)
-      hide(hydrationInputs)
-      show(dateSelector)
-
-   } else if(result ==='Hydration Data' ){
-    selectionLabel.innerText = 'Please Enter Your Hydration Data'
-    hide(sleepInputs)
-    hide(activityInputs)
-    show(hydrationInputs)
-    show(dateSelector)
-    hide(categoriesValue)
-    
-   } else if(result === 'Activity Data' ){
-    selectionLabel.innerText = 'Please Enter Your Activity Data'
-    hide(sleepInputs)
-    show(activityInputs)
-    hide(hydrationInputs)
-    show(dateSelector)
-    hide(categoriesValue)
-   } else {
-    hide(sleepInputs)
-    hide(activityInputs)
-    hide(hydrationInputs)
-    hide(dateSelector)
-    show(categoriesValue)
-   }
-})
-
-var nextImg = 'light'
-changeBackground.addEventListener('click', () => {
-  const light = document.querySelector('.fit-lit-light')
-  let img = ['./images/sun.svg', './images/moon.png']
-  if(nextImg === 'light') {
-    light.classList.add('fit-lit-dark')
-    changeBackground.src = img[0]
-    nextImg = 'dark'
-  }else{
-    light.classList.remove('fit-lit-dark')
-    changeBackground.src = img[1]
-    nextImg = 'light';
+categoriesValue.addEventListener("change", () => {
+  const sleepInputs = document.querySelector(".sleep-data-inputs");
+  const hydrationInputs = document.querySelector(".hydration-data-inputs");
+  const activityInputs = document.querySelector(".activity-data-inputs");
+  const dateSelector = document.querySelector(".date-input");
+  const selectionLabel = document.querySelector(".selection-label");
+  result = categoriesValue.options[categoriesValue.selectedIndex].text;
+  if (result === "Sleep Data") {
+    selectionLabel.innerText = "Please Enter Your Sleep Data";
+    show(sleepInputs);
+    hide(activityInputs);
+    hide(hydrationInputs);
+    show(dateSelector);
+  } else if (result === "Hydration Data") {
+    selectionLabel.innerText = "Please Enter Your Hydration Data";
+    hide(sleepInputs);
+    hide(activityInputs);
+    show(hydrationInputs);
+    show(dateSelector);
+    hide(categoriesValue);
+  } else if (result === "Activity Data") {
+    selectionLabel.innerText = "Please Enter Your Activity Data";
+    hide(sleepInputs);
+    show(activityInputs);
+    hide(hydrationInputs);
+    show(dateSelector);
+    hide(categoriesValue);
+  } else {
+    hide(sleepInputs);
+    hide(activityInputs);
+    hide(hydrationInputs);
+    hide(dateSelector);
+    show(categoriesValue);
   }
-})
+});
+
+var nextImg = "light";
+changeBackground.addEventListener("click", () => {
+  const light = document.querySelector(".fit-lit-light");
+  let img = ["./images/sun.svg", "./images/moon.png"];
+  if (nextImg === "light") {
+    light.classList.add("fit-lit-dark");
+    changeBackground.src = img[0];
+    nextImg = "dark";
+  } else {
+    light.classList.remove("fit-lit-dark");
+    changeBackground.src = img[1];
+    nextImg = "light";
+  }
+});
 
 promiseAll().then((responses) => {
   userData = responses[0];
@@ -169,11 +158,11 @@ promiseAll().then((responses) => {
 });
 
 function hide(element) {
-  element.classList.add('hidden')
+  element.classList.add("hidden");
 }
 
 function show(element) {
-  element.classList.remove('hidden')
+  element.classList.remove("hidden");
 }
 
 function getRandomIndex(userData) {
@@ -281,7 +270,7 @@ function displayAverageSleep() {
 }
 
 function displaySleepForAWeek() {
-  formatInputDate()
+  formatInputDate();
   const sleepInAWeek = user.userSleepData
     .getSleepPerDayForWeek(dateInput, "hoursSlept")
     .reverse();
@@ -334,7 +323,7 @@ function displaySleepForAWeek() {
 }
 
 function displayHydrationForWeek() {
-  formatInputDate() 
+  formatInputDate();
   const hydrationWeek = user.userHydrationData
     .getWeeklyFluids(dateInput)
     .reverse();
@@ -421,8 +410,11 @@ function displaySteps() {
 }
 
 function displayMilesWalked() {
-  formatInputDate()
-  const milesWalked = user.userActivityData.getMilesBasedOnSteps(dateInput, user);
+  formatInputDate();
+  const milesWalked = user.userActivityData.getMilesBasedOnSteps(
+    dateInput,
+    user
+  );
   if (milesWalked === 0.0) {
     activityCard.innerHTML = "<p>Please add data for given date</p>";
   } else {
@@ -432,8 +424,11 @@ function displayMilesWalked() {
 }
 
 function displayNumberOfSteps() {
-  formatInputDate() 
-  const numberOfSteps = user.userActivityData.getActivityDetailByDate(dateInput, "numSteps")
+  formatInputDate();
+  const numberOfSteps = user.userActivityData.getActivityDetailByDate(
+    dateInput,
+    "numSteps"
+  );
   if (numberOfSteps === 0) {
     activityCard.innerHTML += "";
   } else {
@@ -442,8 +437,11 @@ function displayNumberOfSteps() {
 }
 
 function displayMinutesActive() {
-  formatInputDate()
-  const minsActive = user.userActivityData.getActivityDetailByDate(dateInput, "minutesActive");
+  formatInputDate();
+  const minsActive = user.userActivityData.getActivityDetailByDate(
+    dateInput,
+    "minutesActive"
+  );
   if (minsActive === 0) {
     activityCard.innerHTML += "";
   } else {
@@ -451,19 +449,37 @@ function displayMinutesActive() {
   }
 }
 //still editing this function
-function displayActivityDetailComparison () {
-  formatInputDate() 
-  const allNumSteps = userRepository.findAverageActivityDetail(activityData, dateInput, "numSteps");
-  const allFlightsOfStairs = userRepository.findAverageActivityDetail(activityData, dateInput, "flightsOfStairs");
-  const allMinutesActive = userRepository.findAverageActivityDetail(activityData, dateInput, "minutesActive");
-  const minutesActive = userActivity.getActivityDetailByDate(dateInput, "minutesActive")
-  const numSteps = userActivity.getActivityDetailByDate(dateInput, "numSteps")
-  const flightsOfStairs = userActivity.getActivityDetailByDate(dateInput, "flightsOfStairs")
-    const hydrationWeek = user.userHydrationData
-      .getWeeklyFluids(dateInput)
-      .reverse();
-    if (hydrationWeek.length >= 6) {
-      chart.innerHTML = `
+function displayActivityDetailComparison() {
+  formatInputDate();
+  const allNumSteps = userRepository.findAverageActivityDetail(
+    activityData,
+    dateInput,
+    "numSteps"
+  );
+  const allFlightsOfStairs = userRepository.findAverageActivityDetail(
+    activityData,
+    dateInput,
+    "flightsOfStairs"
+  );
+  const allMinutesActive = userRepository.findAverageActivityDetail(
+    activityData,
+    dateInput,
+    "minutesActive"
+  );
+  const minutesActive = userActivity.getActivityDetailByDate(
+    dateInput,
+    "minutesActive"
+  );
+  const numSteps = userActivity.getActivityDetailByDate(dateInput, "numSteps");
+  const flightsOfStairs = userActivity.getActivityDetailByDate(
+    dateInput,
+    "flightsOfStairs"
+  );
+  const hydrationWeek = user.userHydrationData
+    .getWeeklyFluids(dateInput)
+    .reverse();
+  if (hydrationWeek.length >= 6) {
+    chart.innerHTML = `
     <table class="activity-data">
     <tr>
       <td class ="activity-data">You</td>
@@ -494,9 +510,8 @@ function displayActivityDetailComparison () {
       <td class="activity-data">${hydrationWeek[6].numOunces}</td>
     </tr>
   </table>`;
-    } else {
-      chart.innerHTML = `<p> There Is Not Enough Data To Display For This Week. Please Select
+  } else {
+    chart.innerHTML = `<p> There Is Not Enough Data To Display For This Week. Please Select
       A Different Week To See Your Weekly Report <p>`;
-    }
   }
-  
+}

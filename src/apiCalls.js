@@ -1,9 +1,14 @@
+const mainPage = document.querySelector(".fit-lit-light ");
+
 function fetchData(details) {
   return fetch(`http://localhost:3001/api/v1/${details}`)
     .then((response) => response.json())
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      console.log(error);
+      mainPage.innerHTML = "";
+      mainPage.innerHTML += `<h1 class='errorDisplay'>Sorry, server down. Please try again later!`;
+    });
 }
-
 const promiseAll = () => {
   const result = Promise.all([
     fetchData("users"),
@@ -26,7 +31,12 @@ const postData = (details, data) => {
   })
     .then((response) => response.json())
     .then((response) => fetchData(details))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .catch(
+      (err) =>
+        (mainPage.innerHTML = `<h1>Sorry, server down</h1>
+    <p>Please try again later!</p>`)
+    );
 };
 
 export { promiseAll };
