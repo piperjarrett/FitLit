@@ -43,6 +43,28 @@ class UserActivity {
     return averageMinutesActive;
   }
 
+  getActivityDetailForWeek(endDate, detail) {
+    const endDateObj = new Date(endDate);
+    const dayDate = new Date(endDate);
+    dayDate.setDate(endDateObj.getDate() - 7);
+    let weekActivity = [{}, {}, {}, {}, {}, {}, {}];
+    let index = 0;
+    weekActivity.forEach(() => {
+      dayDate.setDate(dayDate.getDate() + 1);
+      let entryDate = `${dayDate.getFullYear()}/${String(
+        dayDate.getMonth() + 1
+      ).padStart(2, "0")}/${String(dayDate.getDate()).padStart(2, "0")}`;
+      let activityEntry = this.data.find((entry) => entry.date === entryDate);
+      if (activityEntry) {
+        weekActivity[index] = { date: entryDate, [detail]: activityEntry[detail] };
+      } else {
+        weekActivity[index] = { date: entryDate, [detail]: 0 };
+      }
+      index++;
+    });
+    return weekActivity;
+  }
+
   allDaysExceedStepGoal(user) {
     return this.data.filter((data) => data.numSteps > user.dailyStepGoal)
   }
