@@ -43,7 +43,6 @@ const submitButton = document.querySelector("button");
 const hydraChart = document.querySelector(".hydra-chart");
 const stepChart = document.getElementById("stepChart").getContext("2d");
 const activityUser = document.querySelector(".activity-user-info");
-const activityAllUser = document.querySelector(".activity-all-user")
 const activityChart = document.querySelector(".activity-chart");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
@@ -55,7 +54,7 @@ submitButton.addEventListener("click", () => {
   displaySleepForAWeek();
   displayHydrationForWeek();
   displaySteps();
-  //displayUserActivityToday()
+  displayUserActivityMilestones();
   displayActivityForWeek();
   displayActivityComparison();
 });
@@ -169,7 +168,7 @@ function displayDashboard() {
   displaySleepForAWeek();
   displayHydrationForWeek();
   displaySteps();
- // displayUserActivityToday();
+  displayUserActivityMilestones();
   displayActivityForWeek();
   displayActivityComparison();
 }
@@ -357,14 +356,15 @@ function displaySteps() {
   stepDetails.innerHTML += `<p class=chart-text>Your daily step goal is ${comparison}% compared to all average users.</p>`;
 }
 
-function displayUserActivityToday() {
+function displayUserActivityMilestones() {
   formatInputDate();
   const milesWalked = user.userActivityData.getMilesBasedOnSteps(
     dateInput,
     user
   );
-  const 
-  if (milesWalked && minsActive && flights) {
+  const allDaysExceeded = user.userActivityData.allDaysExceedStepGoal(user)
+  const allTimeRecord = user.userActivityData.allTimeStairClimbingRecord()
+  if (milesWalked) {
     const stepGoalCompare = user.userActivityData.compareStepGoalByDate(dateInput, user)
     let stepGoalMessage = null
     if(stepGoalCompare) {
@@ -373,7 +373,8 @@ function displayUserActivityToday() {
       stepGoalMessage = 'not met'
     }
     activityUser.innerHTML = `<h3>Today on ${dateInput}:</h3>
-    <p>You walked ${milesWalked} miles, took ${numberOfSteps} steps, climbed ${flights} flights of stairs, and were active for ${minsActive} minutes. Your step goal was ${stepGoalMessage}.`;
+    <p>You walked ${milesWalked} miles. <br>Your step goal was ${stepGoalMessage}. <br>Your longest streak of beating your step goal was ${allDaysExceeded} days.
+    <br>Your all time stair record is ${allTimeRecord}. Keep it up!`;
   } else {
     activityUser.innerHTML = `<h3>Missing user data for ${dateInput}</h3>
     <p>Please choose a different date</p>`;

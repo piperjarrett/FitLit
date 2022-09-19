@@ -73,7 +73,7 @@ class UserActivity {
   }
 
   allDaysExceedStepGoal(user) {
-    return this.data.filter((data) => data.numSteps > user.dailyStepGoal);
+    return this.data.filter((data) => data.numSteps > user.dailyStepGoal).length;
   }
 
   allTimeStairClimbingRecord() {
