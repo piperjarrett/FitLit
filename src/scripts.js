@@ -217,14 +217,11 @@ function getDataToPost(event) {
     };
     detail = "activity";
   }
-  console.log(detail);
-  console.log(data);
   postData(detail, data).then((responses) => {
     assignData(responses);
     createClasses();
     displayDashboard();
   });
-  // promiseAll();
 }
 
 function enableButton() {
@@ -293,7 +290,6 @@ function displayAverageSleep() {
 
 function displaySleepForAWeek() {
   formatInputDate();
-  console.log(dateInput);
   const sleepInAWeek = user.userSleepData
     .getSleepPerDayForWeek(dateInput, "hoursSlept")
     .reverse();
