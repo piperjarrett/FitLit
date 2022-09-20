@@ -374,3 +374,28 @@ p {
   height: 5vh;
 }
 
+@media screen and (max-width: 920px) {
+  .right-nav {
+    width: 40vw;
+  }
+
+  .left-nav {
+    width: 60vw;
+  }
+  
+  .friends-container,
+  .user-container {
+    width: 33vw;
+  }
+  .friends-container {
+    margin-right: 0;
+    width: 36vw;
+  }
+  .steps-container,
+  .activity-container,
+  .hydration-container,
+  .sleep-container {
+    width: 55vw;
+  }
+}
+
