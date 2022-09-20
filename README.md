@@ -31,10 +31,15 @@ FitLit is an interactive website that tracks fitness activities, sleep, and hydr
 - Utilize proper error handling for our users to ensure they get data and submit POST requests. 
 - Implement Chart.js package to display meaningful data to the user in a visually appealing way. 
 
-## Features
-Athlete (user) is randomly generated upon FitLit page load and they are greeted with a welcoming dashboard of their own sleep, hydration, and activity data. These data are also compared against all users to show the user how they stack up against the competition! They can see their user profile information such as email and address as well. The user can select a date to display relevant data for that date and the previous week. 
 
-![fitlit_gif](https://user-images.githubusercontent.com/18154724/188334563-7f259183-e2f7-4ab2-808c-944092cb5f44.gif)
+## Features
+Athlete (user) is randomly generated upon FitLit page load and they are greeted with a welcoming dashboard of their own sleep, hydration, and activity data. These data are also compared against all users to show the user how they stack up against the competition! They can see their user profile information such as email and address as well. The user can select a date to display relevant data for that date and the previous week. The gif below shows the main page, how to display any given week of data, and how to toggle the background color. 
+
+![Main_Page_FitLit](https://user-images.githubusercontent.com/18154724/191154439-2dca5860-f244-4e14-8a22-5af9e0f02b65.gif)
+
+A user can also select a choice using a drop down to post new activity, hydration, and sleep data using input fields and a calendar date picker. The dashboard will show a zero value for any days with missing data. The user is given information about what types of inputs are expected in each field using placeholder text. Posted data will then display on the dashboard without page refresh. The gif below is showing an example of posting new activity information for a given day.
+
+![Activity_Post](https://user-images.githubusercontent.com/18154724/191154867-4d939787-5901-42bb-a08a-602a6a351ff5.gif)
 
 ## Setup
 1. Fork this repo - on the top right corner of this page, click the **Fork** button. 
