@@ -46,10 +46,13 @@ A user can also select a choice using a drop down to post new activity, hydratio
 2. Clone down the forked repo. To rename your project you can use an optional argument when you run git clone (you replace the [...] with the terminal command arguments): `git clone [remote-address] [what you want to name the repo]`
 3. Once you have cloned the repo, change into the directory and install the project dependencies. Run `npm install` to install project dependencies.
 4. Run `npm start` in the terminal to see the HTML page running in your browser on `http://localhost:8080/`. `Control + C` is the command to stop running the local server.  Closing the terminal without stopping the server first could allow the server to continue to run in the background and cause problems. This command is not specific to Webpack; make note of it for future use. 
-5. Enjoy!
+5. Clone the [FitLit API](https://github.com/turingschool-examples/fitlit-api) to a separate folder, CD into it and run `npm install`. 
+6. The local server is now running on `https://localhost:3001/api/v1/activity` for example. Make sure to use `Control + C` to close the local server before closing the terminal when finished.
+7. Enjoy!
 
 ## Future Additions
 - Adding additional charts or widgets to display the data to the user in an image instead of just text.
+- Implement additional error handling to provide more useful information to the user about days that don't have any data or try to post data on the same date. 
 
 ## Technologies
 This project used JavaScript, HTML, and CSS primarily. Test driven development using Mocha and Chai was also used. Additional technologies learned specifically for this project included Webpack, Chart.js, testing accessibility using LightHouse, and making network requests to fetch information from an API. 
