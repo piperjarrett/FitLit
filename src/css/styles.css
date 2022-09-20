@@ -43,8 +43,6 @@ header {
 
 main {
   flex-direction: row;
-  margin: 20px;
-  margin-right: 0;
 }
 
 .left-nav {
@@ -60,7 +58,6 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 2vw;
   margin-left: 0.5vw;
 }
 
@@ -69,7 +66,7 @@ main {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: 2vw;
+  margin-left: 2vw;
 }
 
 .friends-container,
@@ -89,6 +86,7 @@ main {
 
 .user-container,
 .add-form-container {
+  margin-top: 10px;
   font-size: 14px;
   word-wrap: normal;
   padding-left: 1em;
@@ -171,26 +169,29 @@ main {
   width: 100%;
 }
 
-.friend img{
+.friend img {
   width: 25px;
   height: 25px;
 }
 
-.sleep-container {
-  width: auto;
+.sleep-container,
+.activity-container {
+  width: 33vw;
   align-items: center;
   text-align: center;
+  margin-top: 1vh;
   background-color: #6947ff;
-  margin-right: 15px;
+  margin-right: 1px;
   padding-top: 10px;
-  padding-right: 1vw;
-  padding-left: 1vw;
+  padding-right: 0.5vw;
+  padding-left: 0.5vw;
   padding-bottom: 1vw;
-  margin-top: 0px;
+}
+.sleep-container {
+  margin-right: 1vw;
 }
 
 .sleep-data,
-.hydra-data,
 .activity-data {
   border: 1px solid #2cb7ff;
 }
@@ -200,24 +201,12 @@ main {
 
 .hydra-data {
   border: 1px solid #6947ff;
+  width: 25vw;
+  text-align: center;
 }
 
 .activity-data {
   border: 1px solid white;
-}
-
-.hydration-container {
-  color: black;
-  width: auto;
-  align-content: center;
-  text-align: center;
-  background-color: #2cb7ff;
-  margin-left:2vw;
-  margin-bottom: auto;
-  padding-top: 10px;
-  padding-right: 1vw;
-  padding-bottom: 1vw;
-  padding-left: 1vw;
 }
 
 .bottom-nav {
@@ -225,18 +214,32 @@ main {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+  margin-left: 20px;
+}
+.hydration-container,
+.steps-container {
+  width: 33.5vw;
+  margin-top: 1vw;
 }
 
-.steps-container,
-.activity-container {
+.hydration-container {
+  color: black;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2cb7ff;
+  margin-bottom: auto;
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 1vw;
+}
+
+.steps-container {
   color: rgb(0, 0, 0);
-  width: 33.5vw;
   align-items: center;
   text-align: center;
   background-color: #cc66ff;
   padding-top: 10px;
-  margin-top: 20px;
-  margin-bottom: 25px;
+  margin-right: 1vw;
   padding-right: 1vw;
   padding-bottom: 1vw;
   padding-left: 1vw;
@@ -254,10 +257,6 @@ main {
   padding-right: 1vw;
   padding-bottom: 1vw;
   padding-left: 1vw;
-}
-.activity-container {
-  flex-direction: column;
-  margin-left: 1.5vw;
 }
 
 .step-comparison-message {
@@ -326,9 +325,18 @@ p {
 .adding-data-section {
   display: flex;
   flex-direction: column;
-  margin-top: 5vh;
+  margin-top: .1vh;
   justify-content: center;
   color: aliceblue;
+}
+
+.backArrow{
+  padding-top: 1vw;
+  align-self:flex-start;
+}
+
+.backArrow:hover{
+  cursor: pointer;
 }
 
 .adding-data-form {
@@ -364,4 +372,71 @@ p {
 
 .data-submit {
   height: 5vh;
+}
+
+@media screen and (max-width: 920px) {
+  .right-nav {
+    width: 40vw;
+  }
+
+  .left-nav {
+    width: 60vw;
+  }
+
+  .friends-container,
+  .user-container {
+    width: 33vw;
+  }
+  .friends-container {
+    margin-right: 0;
+    width: 36vw;
+  }
+  .steps-container,
+  .activity-container,
+  .hydration-container,
+  .sleep-container {
+    width: 55vw;
+  }
+}
+
+@media screen and (max-width: 650px){
+  .right-nav {
+    width: 100vw;
+    position: absolute;
+  }
+
+  .left-nav {
+    top: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  .user-container {
+   width: 89.5vw;
+  }
+  .friends-container{
+    margin-right: 0;
+    width: 50vw;
+  }
+  .add-form-container{
+    position:absolute;
+    margin-top: 1.5vh;
+    width:35vw;
+    height: 17vh;
+    margin-left: 3vw;
+    left: 50vw;
+    top: 30vh;
+  }
+  .todays-vitals{
+    width: 89.5vw;
+  }
+  
+  .steps-container,
+  .activity-container,
+  .hydration-container,
+  .sleep-container {
+    width: 90vw;
+    margin-top: 4vw;
+  }
+
 }

@@ -8,6 +8,7 @@ import "./images/avatar-male.png";
 import "./images/gym.png";
 import "./images/moon.png";
 import "./images/sun.svg";
+import "./images/arrow_back.png"
 
 //Import fetch
 import { promiseAll } from "./apiCalls.js";
@@ -59,6 +60,13 @@ const numOfOunces = document.querySelector("#numOfOunces");
 const minsActive = document.querySelector("#minutesActive");
 const numOfSteps = document.querySelector("#numOfSteps");
 const flightsOfStairs = document.querySelector("#flightsOfStairs");
+const backArrow = document.querySelector('.backArrow');
+const sleepInputs = document.querySelector(".sleep-data-inputs");
+const hydrationInputs = document.querySelector(".hydration-data-inputs");
+const activityInputs = document.querySelector(".activity-data-inputs");
+const dateSelector = document.querySelector(".date-input");
+const selectionLabel = document.querySelector(".selection-label");
+let result;
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
@@ -73,11 +81,6 @@ submitButton.addEventListener("click", () => {
 formSubmitButton.addEventListener("click", getDataToPost);
 dataInputForm.addEventListener("input", enableButton);
 categoriesValue.addEventListener("change", () => {
-  const sleepInputs = document.querySelector(".sleep-data-inputs");
-  const hydrationInputs = document.querySelector(".hydration-data-inputs");
-  const activityInputs = document.querySelector(".activity-data-inputs");
-  const dateSelector = document.querySelector(".date-input");
-  const selectionLabel = document.querySelector(".selection-label");
   result = categoriesValue.options[categoriesValue.selectedIndex].text;
   if (result === "Sleep Data") {
     selectionLabel.innerText = "Please Enter Your Sleep Data";
@@ -85,6 +88,8 @@ categoriesValue.addEventListener("change", () => {
     hide(activityInputs);
     hide(hydrationInputs);
     show(dateSelector);
+    hide(categoriesValue);
+    show(backArrow)
   } else if (result === "Hydration Data") {
     selectionLabel.innerText = "Please Enter Your Hydration Data";
     hide(sleepInputs);
@@ -92,6 +97,7 @@ categoriesValue.addEventListener("change", () => {
     show(hydrationInputs);
     show(dateSelector);
     hide(categoriesValue);
+    show(backArrow)
   } else if (result === "Activity Data") {
     selectionLabel.innerText = "Please Enter Your Activity Data";
     hide(sleepInputs);
@@ -99,14 +105,19 @@ categoriesValue.addEventListener("change", () => {
     hide(hydrationInputs);
     show(dateSelector);
     hide(categoriesValue);
-  } else {
-    hide(sleepInputs);
-    hide(activityInputs);
-    hide(hydrationInputs);
-    hide(dateSelector);
-    show(categoriesValue);
-  }
+    show(backArrow)
+  } 
 });
+
+backArrow.addEventListener('click', () => {
+  selectionLabel.innerText = "SELECT CATEGORY"
+  hide(sleepInputs);
+  hide(activityInputs);
+  hide(hydrationInputs);
+  hide(dateSelector);
+  show(categoriesValue);
+  hide(backArrow)
+})
 
 var nextImg = "light";
 changeBackground.addEventListener("click", () => {
