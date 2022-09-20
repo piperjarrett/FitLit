@@ -382,7 +382,7 @@ p {
   .left-nav {
     width: 60vw;
   }
-  
+
   .friends-container,
   .user-container {
     width: 33vw;
@@ -399,3 +399,44 @@ p {
   }
 }
 
+@media screen and (max-width: 650px){
+  .right-nav {
+    width: 100vw;
+    position: absolute;
+  }
+
+  .left-nav {
+    top: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  .user-container {
+   width: 89.5vw;
+  }
+  .friends-container{
+    margin-right: 0;
+    width: 50vw;
+  }
+  .add-form-container{
+    position:absolute;
+    margin-top: 1.5vh;
+    width:35vw;
+    height: 17vh;
+    margin-left: 3vw;
+    left: 50vw;
+    top: 30vh;
+  }
+  .todays-vitals{
+    width: 89.5vw;
+  }
+  
+  .steps-container,
+  .activity-container,
+  .hydration-container,
+  .sleep-container {
+    width: 90vw;
+    margin-top: 4vw;
+  }
+
+}
