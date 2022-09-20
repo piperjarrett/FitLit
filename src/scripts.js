@@ -206,8 +206,8 @@ function getDataToPost(event) {
     data = {
       userID: user.id,
       date: calenderDate,
-      hoursSlept: parseInt(hoursSlept.value),
-      sleepQuality: parseInt(sleepQuality.value),
+      hoursSlept: parseFloat(hoursSlept.value),
+      sleepQuality: parseFloat(sleepQuality.value),
     };
     detail = "sleep";
   } else if (result === "Hydration Data") {
@@ -221,8 +221,8 @@ function getDataToPost(event) {
     data = {
       userID: user.id,
       date: calenderDate,
-      numSteps: parseInt(minsActive.value),
-      minutesActive: parseInt(numOfSteps.value),
+      numSteps: parseInt(numOfSteps.value),
+      minutesActive: parseInt(minsActive.value),
       flightsOfStairs: parseInt(flightsOfStairs.value),
     };
     detail = "activity";

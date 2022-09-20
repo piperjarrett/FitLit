@@ -126,7 +126,7 @@ main {
 #numOfSteps,
 #flightsOfStairs {
   height: 4vh;
-  width: 15vw;
+  width: 20vw;
   border-radius: 12px;
 }
 
@@ -350,7 +350,7 @@ p {
 #numOfSteps,
 #flightsOfStairs {
   text-size-adjust: 12vw;
-  width: 6vw;
+  width:10vw;
 }
 
 .sleep-data-inputs,
