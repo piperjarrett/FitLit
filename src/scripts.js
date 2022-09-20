@@ -126,7 +126,7 @@ changeBackground.addEventListener("click", () => {
 promiseAll().then((responses) => {
   assignData(responses);
   createUser();
-  createClasses(user);
+  createClasses();
   displayDashboard();
 });
 
