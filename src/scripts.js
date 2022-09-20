@@ -66,7 +66,6 @@ const hydrationInputs = document.querySelector(".hydration-data-inputs");
 const activityInputs = document.querySelector(".activity-data-inputs");
 const dateSelector = document.querySelector(".date-input");
 const selectionLabel = document.querySelector(".selection-label");
-let result;
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
