@@ -31,6 +31,7 @@ let sleepData;
 let activityData;
 let dateInput;
 let myChart = null;
+let result;
 
 // Query Selectors
 const mainPage = document.querySelector("main");
@@ -58,7 +59,6 @@ const numOfOunces = document.querySelector("#numOfOunces");
 const minsActive = document.querySelector("#minutesActive");
 const numOfSteps = document.querySelector("#numOfSteps");
 const flightsOfStairs = document.querySelector("#flightsOfStairs");
-let result = categoriesValue.options[categoriesValue.selectedIndex].text;
 
 // Event Listeners
 window.addEventListener("load", promiseAll);
@@ -129,6 +129,7 @@ promiseAll().then((responses) => {
   createClasses(user);
   displayDashboard();
 });
+
 function assignData(responses) {
   userData = responses[0];
   hydrationData = responses[1].hydrationData;
@@ -139,8 +140,8 @@ function assignData(responses) {
 function createUser() {
   user = new User(userData.userData[getRandomIndex(userData.userData)]);
 }
+
 function createClasses() {
-  console.log(user);
   user.userSleepData = new SleepSeries(
     sleepData.filter((entry) => entry.userID === user.id)
   );
