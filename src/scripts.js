@@ -32,6 +32,7 @@ let sleepData;
 let activityData;
 let dateInput;
 let myChart = null;
+let result;
 
 // Query Selectors
 const mainPage = document.querySelector("main");
@@ -49,7 +50,7 @@ const activityUser = document.querySelector(".activity-user-info");
 const activityChart = document.querySelector(".activity-chart");
 const changeBackground = document.querySelector(".back-color-button");
 const categoriesValue = document.querySelector(".categories-value");
-const compareActivityChart = document.querySelector(".compare-activity")
+const compareActivityChart = document.querySelector(".compare-activity");
 const calenderInput = document.querySelector(".calender");
 const dataInputForm = document.querySelector(".adding-data-section");
 const formSubmitButton = document.querySelector(".data-submit");
@@ -81,7 +82,6 @@ formSubmitButton.addEventListener("click", getDataToPost);
 dataInputForm.addEventListener("input", enableButton);
 categoriesValue.addEventListener("change", () => {
   result = categoriesValue.options[categoriesValue.selectedIndex].text;
-
   if (result === "Sleep Data") {
     selectionLabel.innerText = "Please Enter Your Sleep Data";
     show(sleepInputs);
@@ -119,8 +119,6 @@ backArrow.addEventListener('click', () => {
   hide(backArrow)
 })
 
-
-
 var nextImg = "light";
 changeBackground.addEventListener("click", () => {
   const light = document.querySelector(".fit-lit-light");
@@ -137,11 +135,24 @@ changeBackground.addEventListener("click", () => {
 });
 
 promiseAll().then((responses) => {
+  assignData(responses);
+  createUser();
+  createClasses();
+  displayDashboard();
+});
+
+function assignData(responses) {
   userData = responses[0];
   hydrationData = responses[1].hydrationData;
   sleepData = responses[2].sleepData;
   activityData = responses[3].activityData;
+}
+
+function createUser() {
   user = new User(userData.userData[getRandomIndex(userData.userData)]);
+}
+
+function createClasses() {
   user.userSleepData = new SleepSeries(
     sleepData.filter((entry) => entry.userID === user.id)
   );
@@ -171,8 +182,7 @@ promiseAll().then((responses) => {
     return newUser;
   });
   userRepository = new UserRepository(allUsers);
-  displayDashboard();
-});
+}
 
 function hide(element) {
   element.classList.add("hidden");
@@ -191,32 +201,38 @@ function getDataToPost(event) {
   const calenderDate = calenderInput.value.split("-").join("/");
   inputValue.value = calenderInput.value;
   dateInput = calenderDate;
+  let data;
+  let detail;
   if (result === "Sleep Data") {
-    let data = {
+    data = {
       userID: user.id,
       date: calenderDate,
       hoursSlept: parseInt(hoursSlept.value),
       sleepQuality: parseInt(sleepQuality.value),
     };
-    postData("sleep", data);
+    detail = "sleep";
   } else if (result === "Hydration Data") {
-    let data = {
+    data = {
       userID: user.id,
       date: calenderDate,
       numOunces: parseInt(numOfOunces.value),
     };
-    postData("hydration", data);
+    detail = "hydration";
   } else if (result === "Activity Data") {
-    let data = {
+    data = {
       userID: user.id,
       date: calenderDate,
       numSteps: parseInt(minsActive.value),
       minutesActive: parseInt(numOfSteps.value),
       flightsOfStairs: parseInt(flightsOfStairs.value),
     };
-    postData("activity", data);
+    detail = "activity";
   }
-  promiseAll();
+  postData(detail, data).then((responses) => {
+    assignData(responses);
+    createClasses();
+    displayDashboard();
+  });
 }
 
 function enableButton() {
@@ -277,9 +293,7 @@ function displayFriends() {
 
 function displayAverageSleep() {
   avgSleepHours.innerHTML = `<p>Average Number of Hours Slept:<br>
-  ${user.userSleepData.getAvgSleepDataPerDay(
-    "hoursSlept"
-  )} hours </p>`;
+  ${user.userSleepData.getAvgSleepDataPerDay("hoursSlept")} hours </p>`;
   avgQualitySleep.innerHTML = `<p>Average Sleep Quality:<br>${user.userSleepData.getAvgSleepDataPerDay(
     "sleepQuality"
   )}</p>`;
@@ -293,6 +307,7 @@ function displaySleepForAWeek() {
   const sleepQualityInAWeek = user.userSleepData
     .getSleepPerDayForWeek(dateInput, "sleepQuality")
     .reverse();
+  sleepForWeek.innerHTML = "";
   sleepForWeek.innerHTML = `<table class="sleep-data">
   <tr>
     <td class="sleep-data">Date</td>
@@ -379,7 +394,7 @@ function displayHydrationForWeek() {
     <td class="hydra-data">${hydrationWeek[6].numOunces}</td>
   </tr>
 </table>`;
-  } 
+  }
 }
 
 function displaySteps() {
@@ -387,9 +402,9 @@ function displaySteps() {
   const averageSteps = userRepository.findAverageStepGoal();
   const comparison = Math.round((user.dailyStepGoal / averageSteps) * 100);
   Chart.defaults.color = "white";
-  if(myChart !== null) {
-   myChart.destroy()
-  }   
+  if (myChart !== null) {
+    myChart.destroy();
+  }
   myChart = new Chart(stepChart, {
     type: "bar",
     data: {
@@ -431,21 +446,24 @@ function displayUserActivityMilestones() {
     dateInput,
     user
   );
-  const allDaysExceeded = user.userActivityData.allDaysExceedStepGoal(user)
-  const allTimeRecord = user.userActivityData.allTimeStairClimbingRecord()
+  const allDaysExceeded = user.userActivityData.allDaysExceedStepGoal(user);
+  const allTimeRecord = user.userActivityData.allTimeStairClimbingRecord();
   if (milesWalked) {
-    const stepGoalCompare = user.userActivityData.compareStepGoalByDate(dateInput, user)
-    let stepGoalMessage = null
-    if(stepGoalCompare) {
-      stepGoalMessage = 'met'
+    const stepGoalCompare = user.userActivityData.compareStepGoalByDate(
+      dateInput,
+      user
+    );
+    let stepGoalMessage = null;
+    if (stepGoalCompare) {
+      stepGoalMessage = "met";
     } else {
-      stepGoalMessage = 'not met'
+      stepGoalMessage = "not met";
     }
     activityUser.innerHTML = `<h3>Today on ${dateInput}:</h3>
     <p>You walked ${milesWalked} miles. <br>Your step goal was ${stepGoalMessage}. <br>Your longest streak of beating your step goal was ${allDaysExceeded} days.
     <br>Your all time stair record is ${allTimeRecord}. Keep it up!</p>`;
-   } 
   }
+}
 
 function displayActivityForWeek() {
   formatInputDate();
@@ -458,9 +476,18 @@ function displayActivityForWeek() {
   const flightsOfStairsWeek = user.userActivityData
     .getActivityDetailForWeek(dateInput, "flightsOfStairs")
     .reverse();
-  const averageMinutes = user.userActivityData.getActiveAverageForWeek(dateInput, "minutesActive")
-  const averageFlights = user.userActivityData.getActiveAverageForWeek(dateInput, "flightsOfStairs")
-  const averageSteps = user.userActivityData.getActiveAverageForWeek(dateInput, "numSteps")
+  const averageMinutes = user.userActivityData.getActiveAverageForWeek(
+    dateInput,
+    "minutesActive"
+  );
+  const averageFlights = user.userActivityData.getActiveAverageForWeek(
+    dateInput,
+    "flightsOfStairs"
+  );
+  const averageSteps = user.userActivityData.getActiveAverageForWeek(
+    dateInput,
+    "numSteps"
+  );
   activityChart.innerHTML = `
     <table class="activity-data">
     <tr>
@@ -522,13 +549,34 @@ function displayActivityForWeek() {
 
 function displayActivityComparison() {
   formatInputDate();
-  const allNumSteps = userRepository.findAverageActivityDetail(activityData, dateInput, "numSteps");
-  const allFlightsOfStairs = userRepository.findAverageActivityDetail(activityData,dateInput,"flightsOfStairs");
-  const allMinutesActive = userRepository.findAverageActivityDetail(activityData,dateInput,"minutesActive");
-  const numberOfSteps = user.userActivityData.getActivityDetailByDate(dateInput,"numSteps");
-  const minsActive = user.userActivityData.getActivityDetailByDate(dateInput,"minutesActive");
-  const flights = user.userActivityData.getActivityDetailByDate(dateInput,"flightsOfStairs");
-    compareActivityChart.innerHTML = `
+  const allNumSteps = userRepository.findAverageActivityDetail(
+    activityData,
+    dateInput,
+    "numSteps"
+  );
+  const allFlightsOfStairs = userRepository.findAverageActivityDetail(
+    activityData,
+    dateInput,
+    "flightsOfStairs"
+  );
+  const allMinutesActive = userRepository.findAverageActivityDetail(
+    activityData,
+    dateInput,
+    "minutesActive"
+  );
+  const numberOfSteps = user.userActivityData.getActivityDetailByDate(
+    dateInput,
+    "numSteps"
+  );
+  const minsActive = user.userActivityData.getActivityDetailByDate(
+    dateInput,
+    "minutesActive"
+  );
+  const flights = user.userActivityData.getActivityDetailByDate(
+    dateInput,
+    "flightsOfStairs"
+  );
+  compareActivityChart.innerHTML = `
     <table class="compare-activity-data">
     <tr>
       <td class ="activity-data">Metric</td>
@@ -551,5 +599,4 @@ function displayActivityComparison() {
       <td class="activity-data">${allFlightsOfStairs}</td>
     </tr>
     </table>`;
-  }
-
+}
